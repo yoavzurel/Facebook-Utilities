@@ -63,7 +63,6 @@ namespace FacebookUtilitiesWebForms
             {
                 User tempFriend = new User();
                 createUserFromDynamicUser(friend, tempFriend);
-
                 m_UserFriends.Add(tempFriend);
             }
         }
@@ -80,7 +79,7 @@ namespace FacebookUtilitiesWebForms
             tempFriendPics[ePictureTypes.pic_small.ToString()] = i_DynamicUser.pic_small;
             tempFriendPics[ePictureTypes.pic_big.ToString()] = i_DynamicUser.pic_big;
             tempFriendPics[ePictureTypes.pic_square.ToString()] = i_DynamicUser.pic_square;
-            tempFriendPics[ePictureTypes.pic.ToString()] = null;
+            tempFriendPics[ePictureTypes.pic.ToString()] = i_DynamicUser.pic;
             i_User.Pictures = tempFriendPics;
         }
 
@@ -94,6 +93,5 @@ namespace FacebookUtilitiesWebForms
              "SELECT uid, name, first_name, last_name, pic_small, pic_big, pic_square, pic, birthday_date FROM user WHERE uid = me()");
             createUserFromDynamicUser(me[0], m_User);
         }
-//ajdlksa
     }
 }
