@@ -75,6 +75,7 @@ namespace FacebookUtilitiesWebForms
             i_User.LastName = i_DynamicUser.last_name;
             i_User.Birthday = i_DynamicUser.birthday_date;
 
+            //create picture dictionary
             Dictionary<string, string> tempFriendPics = new Dictionary<string, string>();
             tempFriendPics[ePictureTypes.pic_small.ToString()] = i_DynamicUser.pic_small;
             tempFriendPics[ePictureTypes.pic_big.ToString()] = i_DynamicUser.pic_big;
