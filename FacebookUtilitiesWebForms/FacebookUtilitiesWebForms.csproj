@@ -72,6 +72,7 @@
       <DependentUpon>default.aspx</DependentUpon>
     </Compile>
     <Compile Include="FacebookLoginAuthintication.cs" />
+    <Compile Include="Friend.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="selectionStage.aspx.cs">
       <DependentUpon>selectionStage.aspx</DependentUpon>

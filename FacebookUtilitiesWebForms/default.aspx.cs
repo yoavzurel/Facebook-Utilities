@@ -35,7 +35,6 @@ namespace FacebookUtilitiesWebForms
             if (m_UserIsLoggedIn)
             {
                 //redirect to the selection stage with the access token
-                m_FacebookLoginClient.accessTokenRetrieved += new AccessTokenRetrieved(m_FacebookLoginClient_accessTokenRetrieved);
                 dynamic m_AccessToken = m_FacebookLoginClient.RetrieveAccessToken(m_Code);
                 string accessToken = m_AccessToken.access_token;
                 Response.Redirect(string.Format("selectionStage.aspx?access_token={0}", accessToken));
@@ -45,11 +44,6 @@ namespace FacebookUtilitiesWebForms
                 Response.Write("problem logging in");
             }
 
-        }
-
-        void m_FacebookLoginClient_accessTokenRetrieved(string accessToken)
-        {
-            Response.Redirect(string.Format("selectionStage.aspx?access_token={0}", null));
         }
     }
 }

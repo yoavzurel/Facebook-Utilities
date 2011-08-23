@@ -26,7 +26,11 @@ namespace FacebookUtilitiesWebForms
     public partial class selectionStage : System.Web.UI.Page
     {
         private string m_AccessToken;
-        private List<User> m_UserFriends;
+       
+        /// <summary>
+        /// the user friends dictionary is orderd by : {id,friend} 
+        /// </summary>
+        private Dictionary<string,Friend> m_UserFriends;
         private User m_User;
         private FacebookClient m_FacebookClient;
         protected void Page_Load(object sender, EventArgs e)
@@ -40,8 +44,6 @@ namespace FacebookUtilitiesWebForms
                     m_FacebookClient = new FacebookClient(m_AccessToken);
                     aquireUser();
                     aquireUserFriends();
-                    Response.Write("hello " + m_User.FullName + Environment.NewLine);
-                    Response.Write("You have " +m_UserFriends.Count.ToString() + " friends");
                     tablePopulate();
                 }
                 else
@@ -55,16 +57,19 @@ namespace FacebookUtilitiesWebForms
             }
         }
 
+        /// <summary>
+        /// setting up the friends list
+        /// </summary>
         private void aquireUserFriends()
         {
-            m_UserFriends = new List<User>();
+            m_UserFriends = new Dictionary<string,Friend>();
             dynamic userFriends = m_FacebookClient.Query(
              "SELECT uid, name, first_name, last_name, pic_small, pic_big, pic_square, pic, birthday_date FROM user WHERE uid IN (SELECT uid2 FROM friend WHERE uid1 = me())");
             foreach (dynamic friend in userFriends)
             {
-                User tempFriend = new User();
+                Friend tempFriend = new Friend();
                 createUserFromDynamicUser(friend, tempFriend);
-                m_UserFriends.Add(tempFriend);
+                m_UserFriends.Add(tempFriend.Id,tempFriend);
             }
         }
 
@@ -74,7 +79,11 @@ namespace FacebookUtilitiesWebForms
             i_User.FullName = i_DynamicUser.name;
             i_User.FirstName = i_DynamicUser.first_name;
             i_User.LastName = i_DynamicUser.last_name;
-            i_User.Birthday = i_DynamicUser.birthday_date;
+
+            if (i_User is Friend)
+            {
+                (i_User as Friend).Birthday = i_DynamicUser.birthday_date;
+            }
 
             Dictionary<string, string> tempFriendPics = new Dictionary<string, string>();
             tempFriendPics[ePictureTypes.pic_small.ToString()] = i_DynamicUser.pic_small;
@@ -91,8 +100,9 @@ namespace FacebookUtilitiesWebForms
         {
             m_User = new User();
             dynamic me = m_FacebookClient.Query(
-             "SELECT uid, name, first_name, last_name, pic_small, pic_big, pic_square, pic, birthday_date FROM user WHERE uid = me()");
+             "SELECT uid, name, first_name, last_name, pic_small, pic_big, pic_square, pic FROM user WHERE uid = me()");
             createUserFromDynamicUser(me[0], m_User);
+            m_User.AccessToken = m_AccessToken;
         }
 
         /// <summary>
@@ -108,7 +118,7 @@ namespace FacebookUtilitiesWebForms
             TableRow temporaryRow;
             TableCell temporaryCell;
 
-            foreach (User friend in m_UserFriends)
+            foreach (User friend in m_UserFriends.Values)
             {
                 temporaryRow = new TableRow();
                 temporaryRow.HorizontalAlign = HorizontalAlign.Center;
