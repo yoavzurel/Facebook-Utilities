@@ -1,0 +1,55 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Web;
+using System.Web.UI;
+using System.Web.UI.WebControls;
+using Facebook;
+
+namespace FacebookUtilitiesWebForms
+{
+    public partial class defualt : System.Web.UI.Page
+    {
+        private bool m_UserIsLoggedIn = false;
+        private FacebookLoginAuthintication m_FacebookLoginClient = new FacebookLoginAuthintication();
+        private string m_Code;
+
+        protected void Page_Load(object sender, EventArgs e)
+        {
+            string response = HttpContext.Current.Request.Url.AbsoluteUri;
+
+            //validating user authurization
+            FacebookOAuthResult userOAuthResult;
+            if (FacebookOAuthResult.TryParse(response, out userOAuthResult))
+            {
+                m_UserIsLoggedIn = userOAuthResult.IsSuccess;
+                m_Code = userOAuthResult.Code;
+            }
+            else
+            {
+                // if this is the first load of the page, we need to initiate a user login sequence
+                Uri loginUri = m_FacebookLoginClient.GetLoginUri();
+                Response.Redirect(loginUri.AbsoluteUri);
+            }
+
+            if (m_UserIsLoggedIn)
+            {
+                //redirect to the selection stage with the access token
+                m_FacebookLoginClient.accessTokenRetrieved += new AccessTokenRetrieved(m_FacebookLoginClient_accessTokenRetrieved);
+                dynamic m_AccessToken = m_FacebookLoginClient.RetrieveAccessToken(m_Code);
+                string accessToken = m_AccessToken.access_token;
+                Response.Redirect(string.Format("selectionStage.aspx?access_token={0}", accessToken));
+            }
+            else
+            {
+                Response.Write("problem logging in");
+            }
+
+        }
+
+        void m_FacebookLoginClient_accessTokenRetrieved(string accessToken)
+        {
+            Response.Redirect(string.Format("selectionStage.aspx?access_token={0}", null));
+        }
+    }
+}
