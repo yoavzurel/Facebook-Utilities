@@ -41,7 +41,8 @@ namespace FacebookUtilitiesWebForms
                     aquireUser();
                     aquireUserFriends();
                     Response.Write("hello " + m_User.FullName + Environment.NewLine);
-                    Response.Write("You have " +m_UserFriends.Count.ToString() + " friends"); 
+                    Response.Write("You have " +m_UserFriends.Count.ToString() + " friends");
+                    tablePopulate();
                 }
                 else
                 {
@@ -115,15 +116,15 @@ namespace FacebookUtilitiesWebForms
 
                 // Retrieves friends picture
                 Image userPic = new Image();
-                //userPic.ImageUrl = friend.Picture;
-                userPic.ImageUrl = @"https://fbcdn-profile-a.akamaihd.net/hprofile-ak-snc4/41497_696110002_7155_q.jpg";
+                userPic.ImageUrl = friend.Pictures[ePictureTypes.pic_small.ToString()];
+                //userPic.ImageUrl = @"https://fbcdn-profile-a.akamaihd.net/hprofile-ak-snc4/41497_696110002_7155_q.jpg";
 
                 populateRow(userPic, temporaryRow, out temporaryCell);
 
                 // Add the name label
                 Label friendNameLabel = new Label();
                 friendNameLabel.Text = friend.FullName;
-                friendNameLabel.Attributes.Add("style", "font-size:14px; color:#3B5998; cursor:pointer;");
+                friendNameLabel.Attributes.Add("class", "name");
 
                 populateRow(friendNameLabel, temporaryRow, out temporaryCell);
 

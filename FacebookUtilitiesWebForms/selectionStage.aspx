@@ -47,11 +47,10 @@ a#link{
 .name b{
 	font-size:14px;
 	color:#3B5998;
-	cursor:pointer;
 	}
 .name{
 	font-size:14px;
-	color:#666;
+	color:#3B5998;
 	padding:8px;
 	}
 #search_area{
