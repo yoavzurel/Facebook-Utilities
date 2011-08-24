@@ -9,60 +9,6 @@
         <link rel="stylesheet" href="CSS/jquery.facebook.multifriend.select.css" /> 
 
     <title>Facebook Birthday Utility</title>
- <style type="text/css">
-        .style1
-        {
-            text-align: right;
-        }
-        .style4
-        {
-            width: 593px;
-        }
-        .uiButtonLarge{
-               padding:2px 6px;
-}
-input{
-               font-size:13px;
-}
-a#link{
-	font-family:Arial, Helvetica, sans-serif;
-	color:#3B5998;
-	font-weight:bolder;
-}
-.uiButtonConfirm{
-               background-color:#5B74A8;
-               background-position:0 -48px;
-               border-color:#29447E #29447E #1A356E;
-               font-weight:bold;
-               color:#FFFFFF;
-}
-.friends_area{
-    width:500px;
-	padding:5px;
-    height:50px;
-    }
-.top_area{
-	background:#627AAD;
-	font-size:14px;
-	color:#FFFFFF;
-	font-weight:bold;
-	padding:6px 6px 6px 12px;
-}
-.name b{
-	font-size:14px;
-	color:#3B5998;
-	}
-.name{
-	font-size:14px;
-	color:#3B5998;
-	padding:8px;
-	}
-#search_area{
-	background:#F2F2F2 none repeat scroll 0 0;
-	padding:5px;
-	height:30px;
-}
-    </style>
 </head>
 <body>
      <div id="pageBody">
@@ -112,16 +58,20 @@ a#link{
 
               <div>
                   <!--<div id="username"></div>-->
-                  <a href="messageWriteStage.aspx?friendsList=<%= friendsLabelHidden.Value%>" id="show-friends" style="display:none;font-size=x-large;">Next</a>
+                  <!--  -->
+                  <a href="#" id="show-friends" style="display:none;font-size=x-large;">Submit</a>
+                  <form id="form1" runat="server">
+                        <div>
+                            <input id="friendsLabelHidden" type="hidden" runat="server" />
+                            <asp:Button ID="button23" runat="server" OnClick="nextButton_Click" Text="Next" class="button"/>
+
+                        </div>
+                  </form>
                   <div id="selected-friends" style="height:30px"></div> 
                   <div id="jfmfs-container"></div> 
               </div> 
     </div>
     <div class="clear"/>
-    <form id="form1" runat="server">
-        <div>
-            <input id="friendsLabelHidden" type="hidden" runat="server" />
-        </div>
     <!--
     <div class="top_area">Select friends</div>
     <div id="search_area"></div>
@@ -132,6 +82,5 @@ a#link{
         </div>
     </div>
     -->
-    </form>
 </body>
 </html>
