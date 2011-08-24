@@ -110,6 +110,9 @@ namespace FacebookUtilitiesWebForms
         /// </summary>
         private void tablePopulate()
         {
+            // Hidding the table for debug
+            //friendsTable.Visible = false;
+
             // Table styling
             friendsTable.CellPadding = 5;
             friendsTable.CellSpacing = 5;
