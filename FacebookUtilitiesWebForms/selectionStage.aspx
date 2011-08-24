@@ -112,7 +112,7 @@ a#link{
 
               <div>
                   <!--<div id="username"></div>-->
-                  <a href="messageWriteStage.aspx?friendsList='<%= friendsLabelHidden.Value %>'" id="show-friends" style="display:none;font-size=x-large;">Next</a>
+                  <a href="messageWriteStage.aspx?friendsList=<%= friendsLabelHidden.Value%>" id="show-friends" style="display:none;font-size=x-large;">Next</a>
                   <div id="selected-friends" style="height:30px"></div> 
                   <div id="jfmfs-container"></div> 
               </div> 
