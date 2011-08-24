@@ -31,7 +31,7 @@ namespace FacebookUtilitiesWebForms
         /// the user friends dictionary is orderd by : {id,friend} 
         /// </summary>
         private Dictionary<string,Friend> m_UserFriends;
-        private User m_User;
+        private User m_ApplicationUser;
         private FacebookClient m_FacebookClient;
 
         private string m_FriendsFromClient;
@@ -48,6 +48,9 @@ namespace FacebookUtilitiesWebForms
                     aquireUser();
                     //aquireUserFriends();
                     //tablePopulate();
+                   //DataBaseHandler dbHandle = new DataBaseHandler(m_ApplicationUser, m_UserFriends);
+                   //dbHandle.IsUserInDataBase(m_ApplicationUser);
+
                 }
                 else
                 {
@@ -101,11 +104,11 @@ namespace FacebookUtilitiesWebForms
         /// </summary>
         private void aquireUser()
         {
-            m_User = new User();
+            m_ApplicationUser = new User();
             dynamic me = m_FacebookClient.Query(
              "SELECT uid, name, first_name, last_name, pic_small, pic_big, pic_square, pic FROM user WHERE uid = me()");
-            createUserFromDynamicUser(me[0], m_User);
-            m_User.AccessToken = m_AccessToken;
+            createUserFromDynamicUser(me[0], m_ApplicationUser);
+            m_ApplicationUser.AccessToken = m_AccessToken;
         }
 
         /// <summary>
@@ -124,7 +127,7 @@ namespace FacebookUtilitiesWebForms
             TableRow temporaryRow;
             TableCell temporaryCell;
 
-            foreach (User friend in m_UserFriends.Values)
+            foreach (Friend friend in m_UserFriends.Values)
             {
                 temporaryRow = new TableRow();
                 temporaryRow.HorizontalAlign = HorizontalAlign.Center;
