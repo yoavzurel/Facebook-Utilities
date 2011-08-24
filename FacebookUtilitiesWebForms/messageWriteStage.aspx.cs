@@ -112,7 +112,7 @@ namespace FacebookUtilitiesWebForms
 
             foreach (String stringiD in m_FriendsStringArray)
             {
-                temporaryFriend = m_UserFriends[stringiD];    
+                temporaryFriend = m_UserFriends[stringiD];
                 temporaryRow = new TableRow();
                 temporaryRow.HorizontalAlign = HorizontalAlign.Center;
                 temporaryRow.VerticalAlign = VerticalAlign.Middle;

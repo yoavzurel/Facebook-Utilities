@@ -7,11 +7,13 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace FacebookUtilitiesWebForms {
-    
-    
-    public partial class messageWriteStage {
-        
+namespace FacebookUtilitiesWebForms
+{
+
+
+    public partial class messageWriteStage
+    {
+
         /// <summary>
         /// form1 control.
         /// </summary>
@@ -20,7 +22,7 @@ namespace FacebookUtilitiesWebForms {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlForm form1;
-        
+
         /// <summary>
         /// friendsTable control.
         /// </summary>
