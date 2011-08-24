@@ -46,16 +46,21 @@ namespace FacebookUtilitiesWebForms
                 {
                     m_FacebookClient = new FacebookClient(m_AccessToken);
                     aquireUser();
-<<<<<<< HEAD
+<<<<<<< Updated upstream
                     //aquireUserFriends();
                     //tablePopulate();
-=======
-                    aquireUserFriends();
-                    tablePopulate();
                    //DataBaseHandler dbHandle = new DataBaseHandler(m_ApplicationUser, m_UserFriends);
                    //dbHandle.IsUserInDataBase(m_ApplicationUser);
 
->>>>>>> 4415193843797d14c146c651afa72d11a06376cc
+=======
+                    aquireUserFriends();
+                    tablePopulate();
+                    DataBaseHandler dbHandle = new DataBaseHandler();
+                    User Yoav = new User();
+                    Yoav.Id = "1";
+                    bool result = dbHandle.IsUserInDataBase(Yoav);
+                    Response.Write(result.ToString());
+>>>>>>> Stashed changes
                 }
                 else
                 {
