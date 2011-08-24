@@ -40,6 +40,11 @@ namespace FacebookUtilitiesWebForms
         {
             if (!IsPostBack)
             {
+                if (Request.QueryString["action"] == "next")
+                {
+                    nextButton_Click(this, null);
+                }
+
                 //first time in the stage
                 m_AccessToken = Request.QueryString["access_token"];
                 if (!string.IsNullOrEmpty(m_AccessToken))
@@ -176,7 +181,7 @@ namespace FacebookUtilitiesWebForms
 
         protected void nextButton_Click(object sender, EventArgs e)
         {
-            Response.Write(friendsLabelHidden.Value.ToString());
+            Response.Redirect(string.Format("messageWriteStage.aspx?friends={0}", friendsLabelHidden.Value));
         }
 
     }
