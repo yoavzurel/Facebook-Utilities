@@ -9,60 +9,6 @@
         <link rel="stylesheet" href="CSS/jquery.facebook.multifriend.select.css" /> 
 
     <title>Facebook Birthday Utility</title>
- <style type="text/css">
-        .style1
-        {
-            text-align: right;
-        }
-        .style4
-        {
-            width: 593px;
-        }
-        .uiButtonLarge{
-               padding:2px 6px;
-}
-input{
-               font-size:13px;
-}
-a#link{
-	font-family:Arial, Helvetica, sans-serif;
-	color:#3B5998;
-	font-weight:bolder;
-}
-.uiButtonConfirm{
-               background-color:#5B74A8;
-               background-position:0 -48px;
-               border-color:#29447E #29447E #1A356E;
-               font-weight:bold;
-               color:#FFFFFF;
-}
-.friends_area{
-    width:500px;
-	padding:5px;
-    height:50px;
-    }
-.top_area{
-	background:#627AAD;
-	font-size:14px;
-	color:#FFFFFF;
-	font-weight:bold;
-	padding:6px 6px 6px 12px;
-}
-.name b{
-	font-size:14px;
-	color:#3B5998;
-	}
-.name{
-	font-size:14px;
-	color:#3B5998;
-	padding:8px;
-	}
-#search_area{
-	background:#F2F2F2 none repeat scroll 0 0;
-	padding:5px;
-	height:30px;
-}
-    </style>
 </head>
 <body>
      <div id="pageBody">
@@ -117,7 +63,7 @@ a#link{
                   <form id="form1" runat="server">
                         <div>
                             <input id="friendsLabelHidden" type="hidden" runat="server" />
-                            <asp:Button ID="button23" runat="server" OnClick="nextButton_Click" Text="Next"/>
+                            <asp:Button ID="button23" runat="server" OnClick="nextButton_Click" Text="Next" class="button"/>
 
                         </div>
                   </form>

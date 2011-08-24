@@ -55,6 +55,7 @@
   <ItemGroup>
     <Content Include="CSS\jquery.facebook.multifriend.select.css" />
     <Content Include="default.aspx" />
+    <Content Include="images\roundtext.gif" />
     <Content Include="messageWriteStage.aspx" />
     <Content Include="selectionStage.aspx" />
     <Content Include="Web.config" />

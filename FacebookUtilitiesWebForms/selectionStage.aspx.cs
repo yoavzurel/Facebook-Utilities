@@ -34,10 +34,13 @@ namespace FacebookUtilitiesWebForms
         private User m_ApplicationUser;
         private FacebookClient m_FacebookClient;
 
-        private string m_FriendsFromClient;
-
         protected void Page_Load(object sender, EventArgs e)
         {
+            if (m_AccessToken == null)
+            {
+                m_AccessToken = Request.QueryString["access_token"];
+            }
+
             if (!IsPostBack)
             {
                 if (Request.QueryString["action"] == "next")
@@ -46,18 +49,18 @@ namespace FacebookUtilitiesWebForms
                 }
 
                 //first time in the stage
-                m_AccessToken = Request.QueryString["access_token"];
+                //m_AccessToken = Request.QueryString["access_token"];
                 if (!string.IsNullOrEmpty(m_AccessToken))
                 {
                     m_FacebookClient = new FacebookClient(m_AccessToken);
                     aquireUser();
                     //aquireUserFriends();
                     //tablePopulate();
-                    DataBaseHandler dbHandle = new DataBaseHandler();
-                    User Yoav = new User();
-                    Yoav.Id = "1";
-                    bool result = dbHandle.IsUserInDataBase(Yoav);
-                    Response.Write(result.ToString());
+                    //DataBaseHandler dbHandle = new DataBaseHandler();
+                    //User Yoav = new User();
+                    //Yoav.Id = "1";
+                    //bool result = dbHandle.IsUserInDataBase(Yoav);
+                    //Response.Write(result.ToString());
                 }
                 else
                 {
@@ -123,8 +126,6 @@ namespace FacebookUtilitiesWebForms
         /// </summary>
         private void tablePopulate()
         {
-            // Hidding the table for debug
-            //friendsTable.Visible = false;
 
             // Table styling
             friendsTable.CellPadding = 5;
@@ -183,7 +184,8 @@ namespace FacebookUtilitiesWebForms
 
         protected void nextButton_Click(object sender, EventArgs e)
         {
-            Response.Redirect(string.Format("messageWriteStage.aspx?friends={0}", friendsLabelHidden.Value));
+            Response.Redirect(string.Format("messageWriteStage.aspx?friends={0}&access_token={1}", 
+                friendsLabelHidden.Value, m_AccessToken));
         }
 
     }
