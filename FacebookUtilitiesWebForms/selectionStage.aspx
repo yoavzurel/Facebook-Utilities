@@ -103,22 +103,26 @@ a#link{
 
                 $("#show-friends").live("click", function () {
                     var friendSelector = $("#jfmfs-container").data('jfmfs');
-                    $("#selected-friends").html(friendSelector.getSelectedIds().join(', '));
-                });                  
- 
- 
+                    var selectedFriends = friendSelector.getSelectedIds();
+                    var hiddenControl = '<%= friendsLabelHidden.ClientID %>';
+                    document.getElementById(hiddenControl).value = selectedFriends;
+                });
+
               </script>
 
               <div>
-                  <!--<div id="username"></div>--> 
-                  <a href="#" id="show-friends" style="display:none;font-size=x-large;">Next</a> 
+                  <!--<div id="username"></div>-->
+                  <a href="messageWriteStage.aspx?friendsList='<%= friendsLabelHidden.Value %>'" id="show-friends" style="display:none;font-size=x-large;">Next</a>
                   <div id="selected-friends" style="height:30px"></div> 
                   <div id="jfmfs-container"></div> 
               </div> 
     </div>
-    <div class="clear"></div>
-    <!--
+    <div class="clear"/>
     <form id="form1" runat="server">
+        <div>
+            <input id="friendsLabelHidden" type="hidden" runat="server" />
+        </div>
+    <!--
     <div class="top_area">Select friends</div>
     <div id="search_area"></div>
     <div style="overflow-y: scroll; height: 370px; margin-top: 3px;">
@@ -127,7 +131,7 @@ a#link{
             </asp:Table>
         </div>
     </div>
-    </form>
     -->
+    </form>
 </body>
 </html>

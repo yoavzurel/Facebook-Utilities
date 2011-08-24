@@ -33,6 +33,9 @@ namespace FacebookUtilitiesWebForms
         private Dictionary<string,Friend> m_UserFriends;
         private User m_User;
         private FacebookClient m_FacebookClient;
+
+        private string m_FriendsFromClient;
+
         protected void Page_Load(object sender, EventArgs e)
         {
             if (!IsPostBack)
@@ -43,8 +46,8 @@ namespace FacebookUtilitiesWebForms
                 {
                     m_FacebookClient = new FacebookClient(m_AccessToken);
                     aquireUser();
-                    aquireUserFriends();
-                    tablePopulate();
+                    //aquireUserFriends();
+                    //tablePopulate();
                 }
                 else
                 {
@@ -166,6 +169,11 @@ namespace FacebookUtilitiesWebForms
 
             // Adds the created cell to the current row
             temporaryRow.Cells.Add(temporaryCell);
+        }
+
+        protected void nextButton_Click(object sender, EventArgs e)
+        {
+            Response.Write(friendsLabelHidden.Value.ToString());
         }
 
     }
