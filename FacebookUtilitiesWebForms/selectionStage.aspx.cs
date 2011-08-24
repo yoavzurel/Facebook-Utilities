@@ -51,13 +51,9 @@ namespace FacebookUtilitiesWebForms
                 {
                     m_FacebookClient = new FacebookClient(m_AccessToken);
                     aquireUser();
-                    //aquireUserFriends();
+                    aquireUserFriends();
                     //tablePopulate();
-                    DataBaseHandler dbHandle = new DataBaseHandler();
-                    User Yoav = new User();
-                    Yoav.Id = "1";
-                    bool result = dbHandle.IsUserInDataBase(Yoav);
-                    Response.Write(result.ToString());
+                   // DataBaseHandler dbHandle = new DataBaseHandler();
                 }
                 else
                 {
