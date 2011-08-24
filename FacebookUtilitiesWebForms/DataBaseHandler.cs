@@ -181,7 +181,7 @@ namespace FacebookUtilitiesWebForms
             return result;
         }
 
-        public void AddUserAndFriendsToDataBase(User i_User, List<Friend>)
+        public void AddUserAndFriendsToDataBase(User i_User, List<Friend> i_FriendsToGreet)
         {
 
         }

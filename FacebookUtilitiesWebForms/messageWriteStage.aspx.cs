@@ -14,6 +14,7 @@ namespace FacebookUtilitiesWebForms
         protected void Page_Load(object sender, EventArgs e)
         {
 
+
             m_Friends = Request.QueryString["friendsList"];
         }
     }
