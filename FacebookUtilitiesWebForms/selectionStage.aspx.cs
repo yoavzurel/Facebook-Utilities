@@ -47,6 +47,7 @@ namespace FacebookUtilitiesWebForms
                     tablePopulate();
                    //DataBaseHandler dbHandle = new DataBaseHandler(m_ApplicationUser, m_UserFriends);
                    //dbHandle.IsUserInDataBase(m_ApplicationUser);
+
                 }
                 else
                 {

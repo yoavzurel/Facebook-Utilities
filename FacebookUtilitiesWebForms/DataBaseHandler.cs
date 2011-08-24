@@ -11,6 +11,7 @@ namespace FacebookUtilitiesWebForms
     /// </summary>
     public class DataBaseHandler
     {
+
         private User m_ApplicationUser;
         private Dictionary<string, Friend> m_FriendsToGreet;
         private string m_ConnectionString = "Data Source=YOAVZUREL-PC;Initial Catalog=FacebookBirthdayUtility;Integrated Security=True";
