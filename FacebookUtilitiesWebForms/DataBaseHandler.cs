@@ -169,6 +169,7 @@ namespace FacebookUtilitiesWebForms
                 tempFriend.Birthday = ((DateTime)dbReader[eTable_Friends_To_Greet_Columns.Friend_Birthday_Date.ToString()]).ToShortDateString();
                 tempFriend.BirthdayMessage = (string)dbReader[eTbale_Birthday_Messages_Columns.Birthday_Greet.ToString()];
                 
+                //build pictures
                 Dictionary<string, string> tempFriendPics = new Dictionary<string, string>();
                 tempFriendPics[ePictureTypes.pic.ToString()] = (string)dbReader[eTable_Friends_To_Greet_Columns.Friend_Pic.ToString()];
                 tempFriendPics[ePictureTypes.pic_big.ToString()] = (string)dbReader[eTable_Friends_To_Greet_Columns.Friend_Pic_Big.ToString()];
@@ -178,6 +179,11 @@ namespace FacebookUtilitiesWebForms
                 result[tempFriend.Id] = tempFriend;
             } 
             return result;
+        }
+
+        public void AddUserAndFriendsToDataBase(User i_User, List<Friend>)
+        {
+
         }
     }
 }
