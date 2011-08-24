@@ -142,8 +142,9 @@ namespace FacebookUtilitiesWebForms
         public Dictionary<string, Friend> GetUserFriendsThatAreInDataBase(User i_User)
         {
             Dictionary<string, Friend> result = new Dictionary<string, Friend>();
-            i_User.Id = "2";
             openConnection();
+
+            //build query
             string query = string.Format(
                 "SELECT {0}, {1} FROM {2} WHERE {3} = {4} AND {5} = {6} AND {7} = {8}",
                 string.Join(", ", Enum.GetNames(typeof(eTable_Friends_To_Greet_Columns))),
@@ -156,6 +157,8 @@ namespace FacebookUtilitiesWebForms
                 string.Join(".", new string[] { eDataBaseTables.Application_Users.ToString(), eTableApplication_User_Columns.User_ID.ToString() }),
                 i_User.Id);
             SqlDataReader dbReader = queryDataBase(query);
+            
+            //create friends from result
             while (dbReader.Read())
             {
                 Friend tempFriend = new Friend();
