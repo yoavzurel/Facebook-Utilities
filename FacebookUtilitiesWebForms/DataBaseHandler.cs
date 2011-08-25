@@ -158,19 +158,19 @@ namespace FacebookUtilitiesWebForms
                 eTable_FacebookUser.ID.ToString(),
                 eTable_Friend.Friend_ID.ToString());
 
-            /*
+            
             openConnection();
             SqlDataReader dbReader = queryDataBase(query);
-
+            /**
             //create friends from result
             while (dbReader.Read())
             {
                 Friend tempFriend = new Friend();
-                tempFriend.Id = (string)dbReader[eTable_Friends_To_Greet_Columns.Friend_ID.ToString()];
-                tempFriend.FirstName = (string)dbReader[eTable_Friends_To_Greet_Columns.Friend_First_Name.ToString()];
-                tempFriend.LastName = (string)dbReader[eTable_Friends_To_Greet_Columns.Friend_Last_Name.ToString()];
-                tempFriend.FullName = (string)dbReader[eTable_Friends_To_Greet_Columns.Friend_Full_Name.ToString()];
-                tempFriend.Birthday = ((DateTime)dbReader[eTable_Friends_To_Greet_Columns.Friend_Birthday_Date.ToString()]).ToShortDateString();
+                tempFriend.Id = (string)dbReader[eTable_FacebookUser.ID.ToString()];
+                tempFriend.FirstName = (string)dbReader[eTable_FacebookUser.First_Name.ToString()];
+                tempFriend.LastName = (string)dbReader[eTable_FacebookUser.Last_Name.ToString()];
+                tempFriend.FullName = (string)dbReader[eTable_FacebookUser.Full_Name.ToString()];
+                tempFriend.BirthdayDateTime = (DateTime)dbReader[eTable_FacebookUser.Birthday.ToString()];
                 tempFriend.BirthdayMessage = (string)dbReader[eTbale_Birthday_Messages_Columns.Birthday_Greet.ToString()];
 
                 //build pictures

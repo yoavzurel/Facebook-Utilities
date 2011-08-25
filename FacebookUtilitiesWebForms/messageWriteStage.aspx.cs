@@ -37,6 +37,7 @@ namespace FacebookUtilitiesWebForms
                 {
                     m_ApplicationUser = FacebookUtilities.GetUser(m_AccessToken);
                     m_UserFriends = FacebookUtilities.GetUsersFriends(m_AccessToken);
+                    testyoav();
                     populateTableWithFriends();
                 }
                 else
@@ -75,6 +76,21 @@ namespace FacebookUtilitiesWebForms
             tempFriend.BirthdayMessage = i_BirthdayWish;
 
             // Needs to send them to DB
+        }
+
+
+
+
+
+
+
+
+
+
+
+        private void testyoav()
+        {
+
         }
     }
 }

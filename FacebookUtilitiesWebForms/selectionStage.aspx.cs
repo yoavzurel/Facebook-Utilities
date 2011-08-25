@@ -36,12 +36,6 @@ namespace FacebookUtilitiesWebForms
                 if (!string.IsNullOrEmpty(m_AccessToken))
                 {
                     m_FacebookClient = new FacebookClient(m_AccessToken);
-
-                    //DataBaseHandler dbHandle = new DataBaseHandler();
-                    //User Yoav = new User();
-                    //Yoav.Id = "1";
-                    //bool result = dbHandle.IsUserInDataBase(Yoav);
-                    //Response.Write(result.ToString());
                 }
                 else
                 {

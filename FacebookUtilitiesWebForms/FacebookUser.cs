@@ -118,6 +118,10 @@ namespace FacebookUtilitiesWebForms
             {
                 return m_DateTimeBirthday;
             }
+            set
+            {
+                m_DateTimeBirthday = value;
+            }
         }
     }
 }
