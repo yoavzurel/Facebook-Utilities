@@ -110,6 +110,12 @@ namespace FacebookUtilitiesWebForms
         {
             this.ConfirmButton.CssClass = "button";
             this.ConfirmButton.Text = "Confirm";
+            this.ConfirmButton.Click += new EventHandler(ConfirmButton_Click);
+        }
+
+        void ConfirmButton_Click(object sender, EventArgs e)
+        {
+            throw new NotImplementedException();
         }
 
         private void setRowProperties()

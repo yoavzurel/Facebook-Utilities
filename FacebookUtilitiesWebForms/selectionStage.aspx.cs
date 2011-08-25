@@ -184,6 +184,11 @@ namespace FacebookUtilitiesWebForms
             temporaryRow.Cells.Add(temporaryCell);
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         protected void nextButton_Click(object sender, EventArgs e)
         {
             Response.Redirect(string.Format("messageWriteStage.aspx?friends={0}&access_token={1}", 
