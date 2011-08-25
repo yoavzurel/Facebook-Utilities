@@ -8,6 +8,17 @@ using Facebook;
 
 namespace FacebookUtilitiesWebForms
 {
+    /// <summary>
+    /// this enum holds the picture types
+    /// </summary>
+    public enum ePictureTypes
+    {
+        pic,
+        pic_small,
+        pic_big,
+        pic_square
+    }
+    
     // Github SSH: git@github.com:yoavzurel/Facebook-Utilities.git
     public partial class defualt : System.Web.UI.Page
     {
