@@ -76,6 +76,12 @@ namespace FacebookUtilitiesWebForms
             Dictionary<string, Friend> friends = FacebookUtilities.GetUsersFriends(m_AccessToken);
             DataBaseHandler db = new DataBaseHandler();
             db.InsertFacebookUser(me);
+            foreach (Friend friend in friends.Values)
+            {
+                db.InsertFacebookUser(friend);
+            }
+            Dictionary<string,Friend> pals = db.GetUserFriendsThatAreInDataBase(me);
+            db.InsertFriendsIntoDataBase(me, friends.Values);
         }
     }
 }

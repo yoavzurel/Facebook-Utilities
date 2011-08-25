@@ -230,26 +230,17 @@ namespace FacebookUtilitiesWebForms
         {
             if (!IsUserInDataBase(i_FacebookUser))
             {
-                string insertToFacebookUserTableCommand = string.Format(
-                    "INSERT INTO {0} VALUES ({1})",
-                    eTabelsInDataBase.FacebookUser.ToString(),
-                    getValuesOfTableForUser(eTabelsInDataBase.FacebookUser, i_FacebookUser));
+                string insertToFacebookUserTableCommand = getCommandInsertFacebookUserInDataBase(i_FacebookUser);
 
                 string insertAsPolimophicTypeCommand;
                 if (i_FacebookUser is ApplicationUser)
                 {
-                    insertAsPolimophicTypeCommand = string.Format(
-                        "INSERT INTO {0} VALUES ({1})",
-                        eTabelsInDataBase.ApplicationUser.ToString(),
-                        getValuesOfTableForUser(eTabelsInDataBase.ApplicationUser, i_FacebookUser));
+                    insertAsPolimophicTypeCommand = getCommandInsertApplicationUserIntoDataBase(i_FacebookUser);
                 }
                 else
                 {
                     //insert facebook user as friend
-                    insertAsPolimophicTypeCommand = string.Format(
-                    "INSERT INTO {0} VALUES ({1})",
-                    eTabelsInDataBase.Friend.ToString(),
-                    getValuesOfTableForUser(eTabelsInDataBase.Friend, i_FacebookUser));
+                    insertAsPolimophicTypeCommand = getCommandInsertFriendIntoDataBase(i_FacebookUser);
                 }
 
                 openConnection();
@@ -259,32 +250,65 @@ namespace FacebookUtilitiesWebForms
             }
         }
 
+        private string getCommandInsertFriendIntoDataBase(FacebookUser i_FacebookUser)
+        {
+            return string.Format(
+                                "INSERT INTO {0} VALUES ({1})",
+                                eTabelsInDataBase.Friend.ToString(),
+                                getValuesOfTableForUser(eTabelsInDataBase.Friend, i_FacebookUser));
+        }
+
+        private string getCommandInsertApplicationUserIntoDataBase(FacebookUser i_FacebookUser)
+        {
+            return string.Format(
+                                    "INSERT INTO {0} VALUES ({1})",
+                                    eTabelsInDataBase.ApplicationUser.ToString(),
+                                    getValuesOfTableForUser(eTabelsInDataBase.ApplicationUser, i_FacebookUser));
+        }
+
+        private string getCommandInsertFacebookUserInDataBase(FacebookUser i_FacebookUser)
+        {
+            return string.Format(
+                                "INSERT INTO {0} VALUES ({1})",
+                                eTabelsInDataBase.FacebookUser.ToString(),
+                                getValuesOfTableForUser(eTabelsInDataBase.FacebookUser, i_FacebookUser));
+        }
+
+        private string getCommandInsertBirthdayMessageIntoDataBase(FacebookUser i_FacebookUser, ApplicationUser i_ApplicationUser)
+        {
+            return string.Format(
+                                "INSERT INTO {0} VALUES ({1}, {2})",
+                                eTabelsInDataBase.Birthday_Messages.ToString(),
+                                getValuesOfTableForUser(eTabelsInDataBase.Birthday_Messages, i_FacebookUser),
+                                i_ApplicationUser.Id);
+        }
+
         private void closeConnection()
         {
             m_DbConnection.Close();
         }
 
-        private string getValuesOfTableForUser(eTabelsInDataBase i_Table, FacebookUser i_ApplicationUser)
+        private string getValuesOfTableForUser(eTabelsInDataBase i_Table, FacebookUser i_FacebookUser)
         {
             string result = null;
             if (i_Table == eTabelsInDataBase.FacebookUser)
             {
-                result = string.Format("'{0}', '{1}', '{2}', '{3}', '{4}', '{5}', '{6}', '{7}', '{8}'",
-                    i_ApplicationUser.Id,
-                    i_ApplicationUser.FirstName,
-                    i_ApplicationUser.LastName,
-                    i_ApplicationUser.FullName,
-                    i_ApplicationUser.Pictures[ePictureTypes.pic.ToString()],
-                    i_ApplicationUser.Pictures[ePictureTypes.pic_big.ToString()],
-                    i_ApplicationUser.Pictures[ePictureTypes.pic_small.ToString()],
-                    i_ApplicationUser.Pictures[ePictureTypes.pic_square.ToString()],
-                    i_ApplicationUser.Birthday);
+                result = string.Format("{0}, '{1}', '{2}', '{3}', '{4}', '{5}', '{6}', '{7}', '{8}'",
+                    i_FacebookUser.Id,
+                    i_FacebookUser.FirstName,
+                    i_FacebookUser.LastName,
+                    i_FacebookUser.FullName,
+                    i_FacebookUser.Pictures[ePictureTypes.pic.ToString()],
+                    i_FacebookUser.Pictures[ePictureTypes.pic_big.ToString()],
+                    i_FacebookUser.Pictures[ePictureTypes.pic_small.ToString()],
+                    i_FacebookUser.Pictures[ePictureTypes.pic_square.ToString()],
+                    i_FacebookUser.BirthdayDateTime.ToShortDateString());
             }
 
             if (i_Table == eTabelsInDataBase.ApplicationUser)
             {
-                ApplicationUser tempUser = i_ApplicationUser as ApplicationUser;
-                result = string.Format("'{0}', '{1}', '{2}', '{3}'",
+                ApplicationUser tempUser = i_FacebookUser as ApplicationUser;
+                result = string.Format("{0}, '{1}', '{2}', '{3}'",
                 tempUser.Id,
                 tempUser.Email,
                 tempUser.RegistrationDate,
@@ -294,40 +318,45 @@ namespace FacebookUtilitiesWebForms
 
             if (i_Table == eTabelsInDataBase.Friend)
             {
-                Friend tempUser = i_ApplicationUser as Friend;
-                result = string.Format("'{0}'",
+                Friend tempUser = i_FacebookUser as Friend;
+                result = string.Format("{0}",
                     tempUser.Id);
             }
 
             if (i_Table == eTabelsInDataBase.Birthday_Messages)
             {
-
-
+                Friend tempUser = i_FacebookUser as Friend;
+                result = string.Format("'{0}', {1}",
+                    tempUser.BirthdayMessage,
+                    tempUser.Id);
             }
 
             return result;
         }
 
 
-
         /// <summary>
-        /// this method recieves a user and his friends and insert them into the data base
+        /// this methods inserts a list of friends into the db
         /// </summary>
-        /// <param name="i_User"></param>
-        /// <param name="i_FriendsToGreet"></param>
-        public void AddUserAndFriendsToDataBase(ApplicationUser i_User, List<Friend> i_FriendsToGreet)
+        /// <param name="i_ApplicationUser"></param>
+        /// <param name="i_FriendsToInsert"></param>
+        public void InsertFriendsIntoDataBase(ApplicationUser i_ApplicationUser, ICollection<Friend> i_FriendsToInsert)
         {
-            if (!IsUserInDataBase(i_User))
+            List<string> insertFacebookUsersCommands = new List<string>();
+            List<string> insertFriendsCommands = new List<string>();
+            List<string> insertBirthdayMessageCommands = new List<string>();
+
+            foreach (Friend friend in i_FriendsToInsert)
             {
-                openConnection();
-                string insertUserQuery = string.Format(
-                    "INSERT INTO {0} VALUES ({1})",
-                    eTabelsInDataBase.ApplicationUser.ToString(),
-                createValuesFromUserForInsertQuery(i_User));
-                SqlDataReader dbReader = commandDataBase(insertUserQuery, false);
-                closeReaderAndConnection(dbReader);
+                if (IsUserInDataBase(friend))
+                {
+                    insertFacebookUsersCommands.Add(getCommandInsertFacebookUserInDataBase(friend));
+                    insertFriendsCommands.Add(getCommandInsertFriendIntoDataBase(friend));
+                    insertBirthdayMessageCommands.Add(getCommandInsertBirthdayMessageIntoDataBase(friend, i_ApplicationUser));
+                }
             }
         }
+
 
         private string createValuesFromUserForInsertQuery(ApplicationUser i_User)
         {
