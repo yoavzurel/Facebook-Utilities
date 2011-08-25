@@ -17,7 +17,7 @@ namespace FacebookUtilitiesWebForms
         private string m_LastName;
         private Dictionary<string, string> m_Pictures;
         private string m_Birthday;
-        private DateTime m_DateTimeBirthday; 
+        private DateTime m_DateTimeBirthday;
 
         public string Id
         {
@@ -101,9 +101,17 @@ namespace FacebookUtilitiesWebForms
                 {
                     m_DateTimeBirthday = friendBirthday;
                 }
+                else
+                {
+                    m_DateTimeBirthday = DateTime.MinValue;
+                }
             }
         }
 
+        /// <summary>
+        /// returns the user birthday represented as DateTime.
+        /// If this field is not assinged it will hold DateTime.MinValue
+        /// </summary>
         public DateTime BirthdayDateTime
         {
             get

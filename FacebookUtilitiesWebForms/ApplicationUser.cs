@@ -15,6 +15,9 @@ namespace FacebookUtilitiesWebForms
         private string m_Email;
         private DateTime m_RegistrationDate;
 
+        /// <summary>
+        /// hold the date that the user has registered to the application
+        /// </summary>
         public DateTime RegistrationDate
         {
             get
@@ -28,6 +31,9 @@ namespace FacebookUtilitiesWebForms
             }
         }
 
+        /// <summary>
+        /// holds the users primary facebook email
+        /// </summary>
         public string Email
         {
             get

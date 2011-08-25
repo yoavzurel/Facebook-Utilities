@@ -35,7 +35,6 @@ namespace FacebookUtilitiesWebForms
                 {
                     m_ApplicationUser = FacebookUtilities.GetUser(m_AccessToken);
                     m_UserFriends = FacebookUtilities.GetUsersFriends(m_AccessToken);
-
                     populateTableWithFriends();
                 }
                 else
