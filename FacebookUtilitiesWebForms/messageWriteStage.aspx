@@ -10,6 +10,8 @@
 </head>
 <body>
     <form id="form1" runat="server">
+    <div class="top_area">Write a personal message for each friend</div>
+    <div id="search_area"></div>
     <div>
         <asp:Table ID="friendsTable" runat="server">
         </asp:Table>
