@@ -76,34 +76,5 @@ namespace FacebookUtilitiesWebForms
 
             // Needs to send them to DB
         }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        private void testYoav()
-        {
-            DataBaseHandler db = new DataBaseHandler();
-            bool shuoldBeNo = db.IsUserInDataBase(m_ApplicationUser);
-
-        }
     }
 }
