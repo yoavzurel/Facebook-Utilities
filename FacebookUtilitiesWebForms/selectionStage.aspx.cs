@@ -34,8 +34,6 @@ namespace FacebookUtilitiesWebForms
         private ApplicationUser m_ApplicationUser;
         private FacebookClient m_FacebookClient;
 
-        private string m_FriendsFromClient;
-
         protected void Page_Load(object sender, EventArgs e)
         {
             if (m_AccessToken == null)
@@ -59,6 +57,8 @@ namespace FacebookUtilitiesWebForms
                     aquireUserFriends();
                     //tablePopulate();
                     //DataBaseHandler dbHandle = new DataBaseHandler();
+                    //User Yoav = new User();
+                    //Yoav.Id = "1";
                     //bool result = dbHandle.IsUserInDataBase(Yoav);
                     //Response.Write(result.ToString());
                 }

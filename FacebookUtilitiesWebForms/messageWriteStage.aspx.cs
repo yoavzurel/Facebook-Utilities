@@ -104,6 +104,68 @@ namespace FacebookUtilitiesWebForms
                 // Adds the row
                 friendsTable.Rows.Add(temporaryMessageRow);
             }
+        {
+
+            // Table styling
+            friendsTable.CellPadding = 5;
+            friendsTable.CellSpacing = 5;
+            //friendsTable.Attributes.Add("style", "border-bottom: #999999 solid 1px;");
+
+            TableRow temporaryRow;
+            TableCell temporaryCell;
+            Friend temporaryFriend;
+
+            foreach (String stringiD in m_FriendsStringArray)
+            {
+                temporaryFriend = m_UserFriends[stringiD];    
+                temporaryRow = new TableRow();
+                temporaryRow.HorizontalAlign = HorizontalAlign.Center;
+                temporaryRow.VerticalAlign = VerticalAlign.Middle;
+
+                // Retrieves friends picture
+                Image userPic = new Image();
+                userPic.ImageUrl = temporaryFriend.Pictures[ePictureTypes.pic_small.ToString()];
+
+                populateRow(userPic, temporaryRow, out temporaryCell);
+
+                // Add the name label
+                Label friendNameLabel = new Label();
+                friendNameLabel.Text = temporaryFriend.FullName;
+                friendNameLabel.Attributes.Add("class", "name");
+
+                populateRow(friendNameLabel, temporaryRow, out temporaryCell);
+
+                TextBox friendCheckBox = new TextBox();
+                friendCheckBox.Width = 300;
+                friendCheckBox.Attributes.Add("TextMode", "multiline");
+                friendCheckBox.CssClass = "ta5";
+                friendCheckBox.Rows = 5;
+                friendCheckBox.Columns = 20;
+
+                populateRow(friendCheckBox, temporaryRow, out temporaryCell);
+
+                // Adds the row
+                friendsTable.Rows.Add(temporaryRow);
+            }
+        }
+
+        /// <summary>
+        /// This method populates a row inside the table of friends.
+        /// </summary>
+        /// <param name="data"></param>
+        /// <param name="temporaryRow"></param>
+        /// <param name="temporaryCell"></param>
+        private static void populateRow(dynamic data, TableRow temporaryRow, out TableCell temporaryCell)
+        {
+            // Creates and populates a cell with the image
+            temporaryCell = new TableCell();
+            temporaryCell.HorizontalAlign = HorizontalAlign.Left;
+            temporaryCell.VerticalAlign = VerticalAlign.Middle;
+
+            temporaryCell.Controls.Add(data);
+
+            // Adds the created cell to the current row
+            temporaryRow.Cells.Add(temporaryCell);
         }
 
         ///// <summary>

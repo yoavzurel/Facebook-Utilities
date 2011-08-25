@@ -7,13 +7,11 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace FacebookUtilitiesWebForms
-{
-
-
-    public partial class messageWriteStage
-    {
-
+namespace FacebookUtilitiesWebForms {
+    
+    
+    public partial class messageWriteStage {
+        
         /// <summary>
         /// form1 control.
         /// </summary>
