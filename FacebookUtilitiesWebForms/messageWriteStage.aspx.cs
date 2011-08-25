@@ -8,6 +8,8 @@ using Facebook;
 
 namespace FacebookUtilitiesWebForms
 {
+    public delegate void SubmitWishesClicked(string i_BirthdayWish, Friend i_FriendWithBirthday);
+
     public partial class messageWriteStage : System.Web.UI.Page
     {
         private String[] m_FriendsStringArray;
@@ -26,7 +28,7 @@ namespace FacebookUtilitiesWebForms
 
         protected void Page_Load(object sender, EventArgs e)
         {
-            if (!IsPostBack && Request.QueryString["friends"] != null)
+            if (!string.IsNullOrEmpty(Request.QueryString["friends"]))
             {
                 m_FriendsStringArray = Request.QueryString["friends"].Split(',');
 
@@ -51,10 +53,24 @@ namespace FacebookUtilitiesWebForms
             foreach (String stringiD in m_FriendsStringArray)
             {
                 temporaryMessageRow = new TableMessageRow(m_UserFriends[stringiD]);
+                temporaryMessageRow.SubmitClicked += new SubmitWishesClicked(temporaryMessageRow_SubmitClicked);
 
                 // Adds the row
                 friendsTable.Rows.Add(temporaryMessageRow);
             }
+        }
+
+        /// <summary>
+        /// The event that takes care of the clicked button inside the table of friends.
+        /// </summary>
+        /// <param name="i_BirthdayWish">The wish that the user wants to send</param>
+        /// <param name="i_FriendWithBirthday">The friend that needs to receive the wish</param>
+        public void temporaryMessageRow_SubmitClicked(string i_BirthdayWish, Friend i_FriendWithBirthday)
+        {
+            Friend tempFriend = i_FriendWithBirthday;
+            tempFriend.BirthdayMessage = i_BirthdayWish;
+
+            // Needs to send them to DB
         }
     }
 }
