@@ -17,7 +17,7 @@ namespace FacebookUtilitiesWebForms
         /// the user friends dictionary is orderd by : {id,friend} 
         /// </summary>
         private Dictionary<string, Friend> m_UserFriends;
-        private User m_ApplicationUser;
+        private ApplicationUser m_ApplicationUser;
         private FacebookClient m_FacebookClient;
 
         /// <summary>
@@ -61,7 +61,7 @@ namespace FacebookUtilitiesWebForms
             }
         }
 
-        private static void createUserFromDynamicUser(dynamic i_DynamicUser, User i_User)
+        private static void createUserFromDynamicUser(dynamic i_DynamicUser, FacebookUser i_User)
         {
             i_User.Id = i_DynamicUser.uid;
             i_User.FullName = i_DynamicUser.name;
@@ -86,7 +86,7 @@ namespace FacebookUtilitiesWebForms
         /// </summary>
         private void aquireUser()
         {
-            m_ApplicationUser = new User();
+            m_ApplicationUser = new ApplicationUser();
             dynamic me = m_FacebookClient.Query(
              "SELECT uid, name, first_name, last_name, pic_small, pic_big, pic_square, pic FROM user WHERE uid = me()");
             createUserFromDynamicUser(me[0], m_ApplicationUser);
@@ -100,154 +100,10 @@ namespace FacebookUtilitiesWebForms
             foreach (String stringiD in m_FriendsStringArray)
             {
                 temporaryMessageRow = new TableMessageRow(m_UserFriends[stringiD]);
-          
+
                 // Adds the row
                 friendsTable.Rows.Add(temporaryMessageRow);
             }
-        {
-
-            // Table styling
-            friendsTable.CellPadding = 5;
-            friendsTable.CellSpacing = 5;
-            //friendsTable.Attributes.Add("style", "border-bottom: #999999 solid 1px;");
-
-            TableRow temporaryRow;
-            TableCell temporaryCell;
-            Friend temporaryFriend;
-
-            foreach (String stringiD in m_FriendsStringArray)
-            {
-                temporaryFriend = m_UserFriends[stringiD];    
-                temporaryRow = new TableRow();
-                temporaryRow.HorizontalAlign = HorizontalAlign.Center;
-                temporaryRow.VerticalAlign = VerticalAlign.Middle;
-
-                // Retrieves friends picture
-                Image userPic = new Image();
-                userPic.ImageUrl = temporaryFriend.Pictures[ePictureTypes.pic_small.ToString()];
-
-                populateRow(userPic, temporaryRow, out temporaryCell);
-
-                // Add the name label
-                Label friendNameLabel = new Label();
-                friendNameLabel.Text = temporaryFriend.FullName;
-                friendNameLabel.Attributes.Add("class", "name");
-
-                populateRow(friendNameLabel, temporaryRow, out temporaryCell);
-
-                TextBox friendCheckBox = new TextBox();
-                friendCheckBox.Width = 300;
-                friendCheckBox.Attributes.Add("TextMode", "multiline");
-                friendCheckBox.CssClass = "ta5";
-                friendCheckBox.Rows = 5;
-                friendCheckBox.Columns = 20;
-
-                populateRow(friendCheckBox, temporaryRow, out temporaryCell);
-
-                // Adds the row
-                friendsTable.Rows.Add(temporaryRow);
-            }
         }
-
-        /// <summary>
-        /// This method populates a row inside the table of friends.
-        /// </summary>
-        /// <param name="data"></param>
-        /// <param name="temporaryRow"></param>
-        /// <param name="temporaryCell"></param>
-        private static void populateRow(dynamic data, TableRow temporaryRow, out TableCell temporaryCell)
-        {
-            // Creates and populates a cell with the image
-            temporaryCell = new TableCell();
-            temporaryCell.HorizontalAlign = HorizontalAlign.Left;
-            temporaryCell.VerticalAlign = VerticalAlign.Middle;
-
-            temporaryCell.Controls.Add(data);
-
-            // Adds the created cell to the current row
-            temporaryRow.Cells.Add(temporaryCell);
-        }
-
-        ///// <summary>
-        ///// This method populates the friends table.
-        ///// </summary>
-        //private void tablePopulate()
-        //{
-
-        //    // Table styling
-        //    friendsTable.CellPadding = 5;
-        //    friendsTable.CellSpacing = 5;
-        //    //friendsTable.Attributes.Add("style", "border-bottom: #999999 solid 1px;");
-
-        //    TableRow temporaryRow;
-        //    TableCell temporaryCell;
-        //    Friend temporaryFriend;
-            
-
-        //    foreach (String stringiD in m_FriendsStringArray)
-        //    {
-        //        temporaryFriend = m_UserFriends[stringiD];
-        //        temporaryRow = new TableRow();
-        //        temporaryRow.HorizontalAlign = HorizontalAlign.Center;
-        //        temporaryRow.VerticalAlign = VerticalAlign.Middle;
-
-        //        // Retrieves friends picture
-        //        Image userPic = new Image();
-        //        userPic.ImageUrl = temporaryFriend.Pictures[ePictureTypes.pic_small.ToString()];
-
-        //        populateRow(userPic, temporaryRow, out temporaryCell);
-
-        //        // Add the name label
-        //        Label friendNameLabel = new Label();
-        //        friendNameLabel.Text = temporaryFriend.FullName;
-        //        friendNameLabel.Attributes.Add("class", "name");
-
-        //        populateRow(friendNameLabel, temporaryRow, out temporaryCell);
-
-        //        TextBox friendTextBox = new TextBox();
-        //        applyTextBoxSettings(friendTextBox);
-
-        //        // Adds the new textBox to the list
-        //        m_ListOfTextBoxes.Add(friendTextBox);
-
-        //        populateRow(friendTextBox, temporaryRow, out temporaryCell);
-
-        //        Button confirmationButton = new Button();
-        //        confirmationButton.CssClass = "button";
-        //        confirmationButton.Text = "Confirm";
-
-        //        populateRow(confirmationButton, temporaryRow, out temporaryCell);
-
-        //        // Adds the row
-        //        friendsTable.Rows.Add(temporaryRow);
-        //    }
-        //}
-
-        //private static void applyTextBoxSettings(TextBox friendTextBox)
-        //{
-        //    friendTextBox.Width = 210;
-        //    friendTextBox.Height = 52;
-        //    friendTextBox.TextMode = TextBoxMode.MultiLine;
-        //    friendTextBox.CssClass = "ta5";
-        //}
-
-        ///// <summary>
-        ///// This method populates a row inside the table of friends.
-        ///// </summary>
-        ///// <param name="data"></param>
-        ///// <param name="temporaryRow"></param>
-        ///// <param name="temporaryCell"></param>
-        //private static void populateRow(dynamic data, TableRow temporaryRow, out TableCell temporaryCell)
-        //{
-        //    // Creates and populates a cell with the image
-        //    temporaryCell = new TableCell();
-        //    temporaryCell.HorizontalAlign = HorizontalAlign.Left;
-        //    temporaryCell.VerticalAlign = VerticalAlign.Middle;
-
-        //    temporaryCell.Controls.Add(data);
-
-        //    // Adds the created cell to the current row
-        //    temporaryRow.Cells.Add(temporaryCell);
-        //}
     }
 }

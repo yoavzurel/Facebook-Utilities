@@ -94,6 +94,7 @@
       <DependentUpon>selectionStage.aspx</DependentUpon>
     </Compile>
     <Compile Include="ApplicationUser.cs" />
+    <Compile Include="TableMessageRow.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />
