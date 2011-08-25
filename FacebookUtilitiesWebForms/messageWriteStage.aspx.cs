@@ -20,6 +20,11 @@ namespace FacebookUtilitiesWebForms
         private User m_ApplicationUser;
         private FacebookClient m_FacebookClient;
 
+        /// <summary>
+        /// The list contains the text boxes of each friend.
+        /// </summary>
+        private readonly List<TextBox> m_ListOfTextBoxes = new List<TextBox>();
+
         protected void Page_Load(object sender, EventArgs e)
         {
             if (!IsPostBack && Request.QueryString["friends"] != null)
@@ -109,6 +114,7 @@ namespace FacebookUtilitiesWebForms
             TableRow temporaryRow;
             TableCell temporaryCell;
             Friend temporaryFriend;
+            
 
             foreach (String stringiD in m_FriendsStringArray)
             {
@@ -130,18 +136,31 @@ namespace FacebookUtilitiesWebForms
 
                 populateRow(friendNameLabel, temporaryRow, out temporaryCell);
 
-                TextBox friendCheckBox = new TextBox();
-                friendCheckBox.Width = 300;
-                friendCheckBox.Attributes.Add("TextMode", "multiline");
-                friendCheckBox.CssClass = "ta5";
-                friendCheckBox.Rows = 5;
-                friendCheckBox.Columns = 20;
+                TextBox friendTextBox = new TextBox();
+                applyTextBoxSettings(friendTextBox);
 
-                populateRow(friendCheckBox, temporaryRow, out temporaryCell);
+                // Adds the new textBox to the list
+                m_ListOfTextBoxes.Add(friendTextBox);
+
+                populateRow(friendTextBox, temporaryRow, out temporaryCell);
+
+                Button confirmationButton = new Button();
+                confirmationButton.CssClass = "button";
+                confirmationButton.Text = "Confirm";
+
+                populateRow(confirmationButton, temporaryRow, out temporaryCell);
 
                 // Adds the row
                 friendsTable.Rows.Add(temporaryRow);
             }
+        }
+
+        private static void applyTextBoxSettings(TextBox friendTextBox)
+        {
+            friendTextBox.Width = 210;
+            friendTextBox.Height = 52;
+            friendTextBox.TextMode = TextBoxMode.MultiLine;
+            friendTextBox.CssClass = "ta5";
         }
 
         /// <summary>
