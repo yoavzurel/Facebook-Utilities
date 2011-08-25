@@ -100,8 +100,8 @@ namespace FacebookUtilitiesWebForms
 
         private void setTextBoxProperties()
         {
-            this.TextBox.Width = 230;
-            this.TextBox.Height = 60;
+            this.TextBox.Width = 227;
+            this.TextBox.Height = 57;
             this.TextBox.TextMode = TextBoxMode.MultiLine;
             this.TextBox.CssClass = "ta5";
         }
