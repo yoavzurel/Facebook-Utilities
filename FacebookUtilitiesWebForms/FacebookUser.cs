@@ -11,12 +11,13 @@ namespace FacebookUtilitiesWebForms
     /// </summary>
     public class FacebookUser
     {
-
         private string m_Id;
         private string m_FullName;
         private string m_FirstName;
         private string m_LastName;
         private Dictionary<string, string> m_Pictures;
+        private string m_Birthday;
+        private DateTime m_DateTimeBirthday; 
 
         public string Id
         {
@@ -81,6 +82,34 @@ namespace FacebookUtilitiesWebForms
             set
             {
                 m_Pictures = value;
+            }
+        }
+
+        /// <summary>
+        /// The friend birthday date. 
+        /// FQL field: birthday_date.
+        /// Representation: MM/DD/YYYY.
+        /// </summary>
+        public string Birthday
+        {
+            set
+            {
+                m_Birthday = value;
+                DateTime friendBirthday;
+
+                if (DateTime.TryParse(m_Birthday, out friendBirthday))
+                {
+                    m_DateTimeBirthday = friendBirthday;
+                }
+
+            }
+        }
+
+        public DateTime Birthday
+        {
+            get
+            {
+                return m_DateTimeBirthday;
             }
         }
     }
