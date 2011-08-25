@@ -80,7 +80,7 @@ namespace FacebookUtilitiesWebForms
         /// </summary>
         /// <param name="i_User"></param>
         /// <returns></returns>
-        public bool IsUserInDataBase(User i_User)
+        public bool IsUserInDataBase(ApplicationUser i_User)
         {
             bool result = false;
             openConnection();
@@ -139,10 +139,9 @@ namespace FacebookUtilitiesWebForms
         /// </summary>
         /// <param name="i_User"></param>
         /// <returns></returns>
-        public Dictionary<string, Friend> GetUserFriendsThatAreInDataBase(User i_User)
+        public Dictionary<string, Friend> GetUserFriendsThatAreInDataBase(ApplicationUser i_User)
         {
             Dictionary<string, Friend> result = new Dictionary<string, Friend>();
-            openConnection();
 
             //build query
             string query = string.Format(
@@ -156,6 +155,8 @@ namespace FacebookUtilitiesWebForms
                 string.Join(".", new string[] { eDataBaseTables.Friends_To_Greet.ToString(), eTable_Friends_To_Greet_Columns.Friend_ID.ToString() }),
                 string.Join(".", new string[] { eDataBaseTables.Application_Users.ToString(), eTableApplication_User_Columns.User_ID.ToString() }),
                 i_User.Id);
+
+            openConnection();
             SqlDataReader dbReader = queryDataBase(query);
             
             //create friends from result
@@ -177,13 +178,40 @@ namespace FacebookUtilitiesWebForms
                 tempFriendPics[ePictureTypes.pic_square.ToString()] = (string)dbReader[eTable_Friends_To_Greet_Columns.Friend_Pic_Square.ToString()];
                 tempFriend.Pictures = tempFriendPics;
                 result[tempFriend.Id] = tempFriend;
-            } 
+            }
+            closeReaderAndConnection(dbReader);
             return result;
         }
 
-        public void AddUserAndFriendsToDataBase(User i_User, List<Friend> i_FriendsToGreet)
+        /// <summary>
+        /// this method recieves a user and his friends and insert them into the data base
+        /// </summary>
+        /// <param name="i_User"></param>
+        /// <param name="i_FriendsToGreet"></param>
+        public void AddUserAndFriendsToDataBase(ApplicationUser i_User, List<Friend> i_FriendsToGreet)
         {
+            if (!IsUserInDataBase(i_User))
+            {
+                openConnection();
+                string insertUserQuery = string.Format(
+                    "INSERT INTO {0} VALUES ({1})",
+                    eDataBaseTables.Application_Users.ToString(),
+                createValuesFromUserForInsertQuery(i_User));
+                SqlDataReader dbReader =  queryDataBase(insertUserQuery);
+                closeReaderAndConnection(dbReader);
+            }
+        }
 
+        private string createValuesFromUserForInsertQuery(ApplicationUser i_User)
+        {
+            string[] arrayOfValues = new string[]{
+                i_User.Id, i_User.FirstName, i_User.LastName, i_User.FullName,
+                i_User.AccessToken, i_User.Pictures[ePictureTypes.pic.ToString()],
+                i_User.Pictures[ePictureTypes.pic_big.ToString()],
+                i_User.Pictures[ePictureTypes.pic_small.ToString()],
+                i_User.Pictures[ePictureTypes.pic_square.ToString()],
+                i_User.RegistrationDate.ToShortDateString(), i_User.Email};
+            return string.Join(", ", arrayOfValues);
         }
     }
 }

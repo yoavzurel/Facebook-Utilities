@@ -6,10 +6,9 @@ using System.Web;
 namespace FacebookUtilitiesWebForms
 {
     /// <summary>
-    /// This class represent the user of the application friend. 
-    /// A friens is also a user.
+    /// This calls represent the friend of an application user.
     /// </summary>
-    public class Friend: User
+    public class Friend: FacebookUser
     {
         private string m_BirthdayMessage;
         private string m_Birthday; 
