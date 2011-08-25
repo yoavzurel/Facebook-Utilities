@@ -59,15 +59,8 @@ namespace FacebookUtilitiesWebForms
                     aquireUserFriends();
                     //tablePopulate();
                     //DataBaseHandler dbHandle = new DataBaseHandler();
-<<<<<<< HEAD
-                    //dbHandle.IsUserInDataBase(m_ApplicationUser);
-                   // dbHandle.AddUserAndFriendsToDataBase(m_ApplicationUser, null);
-=======
-                    //User Yoav = new User();
-                    //Yoav.Id = "1";
                     //bool result = dbHandle.IsUserInDataBase(Yoav);
                     //Response.Write(result.ToString());
->>>>>>> b8bf3210a4bab03e9ea9a1018eaaf89d6c4ab949
                 }
                 else
                 {
