@@ -38,7 +38,6 @@ namespace FacebookUtilitiesWebForms
                     m_ApplicationUser = FacebookUtilities.GetUser(m_AccessToken);
                     m_UserFriends = FacebookUtilities.GetUsersFriends(m_AccessToken);
                     populateTableWithFriends();
-                    testYoav();
                 }
                 else
                 {
@@ -103,6 +102,8 @@ namespace FacebookUtilitiesWebForms
         private void testYoav()
         {
             DataBaseHandler db = new DataBaseHandler();
+            bool shuoldBeNo = db.IsUserInDataBase(m_ApplicationUser);
+
         }
     }
 }
