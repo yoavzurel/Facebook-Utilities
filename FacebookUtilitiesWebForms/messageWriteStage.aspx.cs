@@ -36,6 +36,7 @@ namespace FacebookUtilitiesWebForms
                     m_ApplicationUser = FacebookUtilities.GetUser(m_AccessToken);
                     m_UserFriends = FacebookUtilities.GetUsersFriends(m_AccessToken);
                     populateTableWithFriends();
+                    testYoav();
                 }
                 else
                 {
@@ -43,6 +44,8 @@ namespace FacebookUtilitiesWebForms
                 }
             }
         }
+
+
 
         private void populateTableWithFriends()
         {
@@ -55,6 +58,11 @@ namespace FacebookUtilitiesWebForms
                 // Adds the row
                 friendsTable.Rows.Add(temporaryMessageRow);
             }
+        }
+
+        private void testYoav()
+        {
+
         }
     }
 }

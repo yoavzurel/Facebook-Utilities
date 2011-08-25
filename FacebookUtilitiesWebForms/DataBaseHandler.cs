@@ -9,45 +9,39 @@ namespace FacebookUtilitiesWebForms
     /// <summary>
     /// this enum hold the data base table names
     /// </summary>
-    public enum eDataBaseTables
+    public enum eTabelsInDataBase
     {
-        Application_Users,
-        Friends_To_Greet,
-        Birthday_Messages
+        ApplicationUser,
+        Friend,
+        Birthday_Messages,
+        FacebookUser
     }
 
     /// <summary>
     /// this enum holds the column names of the application user table
     /// </summary>
-    public enum eTableApplication_User_Columns
+    public enum eTableApplicationUser_Columns
     {
-        User_ID,
-        User_First_Name,
-        User_Last_Name,
-        User_Full_Name,
-        User_Access_Token,
-        User_Pic,
-        User_Pic_Big,
-        User_Pic_Small,
-        User_Pic_Square,
-        User_Registration_Date,
-        User_Email
+        Application_User_ID,
+        Access_Token,
+        Registration_Date,
+        Email
     }
 
     /// <summary>
-    /// this enum holds the column names of the friends to greet table
+    /// this enum holds all of the columns of the facebook user table
     /// </summary>
-    public enum eTable_Friends_To_Greet_Columns
+    public enum eTable_FacebookUser
     {
-        Friend_ID,
-        Friend_First_Name,
-        Friend_Last_Name,
-        Friend_Full_Name,
-        Friend_Pic,
-        Friend_Pic_Big,
-        Friend_Pic_Small,
-        Friend_Pic_Square,
-        Friend_Birthday_Date
+        ID,
+        First_Name,
+        Last_Name,
+        Full_Name,
+        Pic,
+        Pic_Big,
+        Pic_Small,
+        Pic_Square,
+        Birthday
     }
 
     /// <summary>
@@ -56,14 +50,19 @@ namespace FacebookUtilitiesWebForms
     public enum eTbale_Birthday_Messages_Columns
     {
         Birthday_Greet,
-        Application_User_ID,
-        Friend_To_Greet_ID
+        From_Application_User_ID,
+        To_Friend_ID
+    }
+
+    public enum eTable_Friend
+    {
+        Friend_ID
     }
 
     //Yoav Connection String: "Data Source=YOAVZUREL-PC;Initial Catalog=FacebookBirthdayUtility;Integrated Security=True";
     //David Connection String: {Fill Here}
 
- 
+
     /// <summary>
     /// This class makes calls to the database
     /// This class don't handle exceptions. 
@@ -71,6 +70,7 @@ namespace FacebookUtilitiesWebForms
     /// </summary>
     public class DataBaseHandler
     {
+       
         private const string m_ConnectionString = "Data Source=YOAVZUREL-PC;Initial Catalog=FacebookBirthdayUtility;Integrated Security=True";
         private SqlConnection m_DbConnection = new SqlConnection(m_ConnectionString);
         SqlCommand m_DbCommand;
@@ -85,11 +85,11 @@ namespace FacebookUtilitiesWebForms
             bool result = false;
             openConnection();
 
-              SqlDataReader dbReader = queryDataBase(string.Format
-                ("SELECT * FROM {0} WHERE {1} = {2}",
-                eDataBaseTables.Application_Users.ToString(),
-                eTableApplication_User_Columns.User_ID.ToString(),
-                i_User.Id));
+            SqlDataReader dbReader = queryDataBase(string.Format
+              ("SELECT * FROM {0} WHERE {1} = {2} ",
+              eTabelsInDataBase.ApplicationUser.ToString(),
+              eTableApplicationUser_Columns.Application_User_ID.ToString(),
+              i_User.Id));
 
             if (dbReader.HasRows)
             {
@@ -145,20 +145,23 @@ namespace FacebookUtilitiesWebForms
 
             //build query
             string query = string.Format(
-                "SELECT {0}, {1} FROM {2} WHERE {3} = {4} AND {5} = {6} AND {7} = {8}",
-                string.Join(", ", Enum.GetNames(typeof(eTable_Friends_To_Greet_Columns))),
+                "SELECT {0}, {1} FROM {2}, {3}, {4} WHERE {3} = {4} AND {5} = {6} AND {7} = {8}",
+                addDotAndStarToString(eTabelsInDataBase.FacebookUser.ToString()),
                 eTbale_Birthday_Messages_Columns.Birthday_Greet.ToString(),
-                string.Join(", ", Enum.GetNames(typeof(eDataBaseTables))),
-                string.Join(".", new string[] { eDataBaseTables.Birthday_Messages.ToString(), eTbale_Birthday_Messages_Columns.Application_User_ID.ToString() }),
-                string.Join(".", new string[] { eDataBaseTables.Application_Users.ToString(), eTableApplication_User_Columns.User_ID.ToString() }),
-                string.Join(".", new string[] { eDataBaseTables.Birthday_Messages.ToString(), eTbale_Birthday_Messages_Columns.Friend_To_Greet_ID.ToString() }),
-                string.Join(".", new string[] { eDataBaseTables.Friends_To_Greet.ToString(), eTable_Friends_To_Greet_Columns.Friend_ID.ToString() }),
-                string.Join(".", new string[] { eDataBaseTables.Application_Users.ToString(), eTableApplication_User_Columns.User_ID.ToString() }),
-                i_User.Id);
+                eTabelsInDataBase.Friend.ToString(),
+                eTabelsInDataBase.Birthday_Messages.ToString(),
+                eTabelsInDataBase.FacebookUser.ToString(),
+                eTbale_Birthday_Messages_Columns.From_Application_User_ID.ToString(),
+                i_User.Id,
+                eTable_Friend.Friend_ID.ToString(),
+                eTbale_Birthday_Messages_Columns.To_Friend_ID.ToString(),
+                eTable_FacebookUser.ID.ToString(),
+                eTable_Friend.Friend_ID.ToString());
 
+            /*
             openConnection();
             SqlDataReader dbReader = queryDataBase(query);
-            
+
             //create friends from result
             while (dbReader.Read())
             {
@@ -169,7 +172,7 @@ namespace FacebookUtilitiesWebForms
                 tempFriend.FullName = (string)dbReader[eTable_Friends_To_Greet_Columns.Friend_Full_Name.ToString()];
                 tempFriend.Birthday = ((DateTime)dbReader[eTable_Friends_To_Greet_Columns.Friend_Birthday_Date.ToString()]).ToShortDateString();
                 tempFriend.BirthdayMessage = (string)dbReader[eTbale_Birthday_Messages_Columns.Birthday_Greet.ToString()];
-                
+
                 //build pictures
                 Dictionary<string, string> tempFriendPics = new Dictionary<string, string>();
                 tempFriendPics[ePictureTypes.pic.ToString()] = (string)dbReader[eTable_Friends_To_Greet_Columns.Friend_Pic.ToString()];
@@ -179,8 +182,22 @@ namespace FacebookUtilitiesWebForms
                 tempFriend.Pictures = tempFriendPics;
                 result[tempFriend.Id] = tempFriend;
             }
+             
             closeReaderAndConnection(dbReader);
+             * */
             return result;
+        }
+
+
+        /// <summary>
+        /// This mehtod recieves a tabel name and returns a table name with .*
+        /// input: a output a.*
+        /// </summary>
+        /// <param name="i_TableName"></param>
+        /// <returns></returns>
+        private string addDotAndStarToString(string i_TableName)
+        {
+            return string.Format("{0}.*", i_TableName);
         }
 
         /// <summary>
@@ -195,9 +212,9 @@ namespace FacebookUtilitiesWebForms
                 openConnection();
                 string insertUserQuery = string.Format(
                     "INSERT INTO {0} VALUES ({1})",
-                    eDataBaseTables.Application_Users.ToString(),
+                    eTabelsInDataBase.ApplicationUser.ToString(),
                 createValuesFromUserForInsertQuery(i_User));
-                SqlDataReader dbReader =  queryDataBase(insertUserQuery);
+                SqlDataReader dbReader = queryDataBase(insertUserQuery);
                 closeReaderAndConnection(dbReader);
             }
         }
@@ -213,5 +230,6 @@ namespace FacebookUtilitiesWebForms
                 i_User.RegistrationDate.ToShortDateString(), i_User.Email};
             return string.Join(", ", arrayOfValues);
         }
+        
     }
 }
