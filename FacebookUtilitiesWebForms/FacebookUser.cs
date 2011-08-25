@@ -106,6 +106,11 @@ namespace FacebookUtilitiesWebForms
                     m_DateTimeBirthday = DateTime.MinValue;
                 }
             }
+
+            get
+            {
+                return m_Birthday;
+            }
         }
 
         /// <summary>

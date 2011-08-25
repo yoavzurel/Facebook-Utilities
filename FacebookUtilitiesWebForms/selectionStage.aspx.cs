@@ -75,7 +75,7 @@ namespace FacebookUtilitiesWebForms
             ApplicationUser me = FacebookUtilities.GetUser(m_AccessToken);
             Dictionary<string, Friend> friends = FacebookUtilities.GetUsersFriends(m_AccessToken);
             DataBaseHandler db = new DataBaseHandler();
-            bool shouldBeFalse = db.IsUserInDataBase(me);
+            db.InsertFacebookUser(me);
         }
     }
 }

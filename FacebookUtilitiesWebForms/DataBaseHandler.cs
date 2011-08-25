@@ -70,26 +70,39 @@ namespace FacebookUtilitiesWebForms
     /// </summary>
     public class DataBaseHandler
     {
-       
+
         private const string m_ConnectionString = "Data Source=YOAVZUREL-PC;Initial Catalog=FacebookBirthdayUtility;Integrated Security=True";
         private SqlConnection m_DbConnection = new SqlConnection(m_ConnectionString);
         SqlCommand m_DbCommand;
 
         /// <summary>
-        /// this method returns true if the user is in the database
+        /// this method returns true if the facebook user is in the database
         /// </summary>
-        /// <param name="i_User"></param>
+        /// <param name="i_FacebookUser"></param>
         /// <returns></returns>
-        public bool IsUserInDataBase(ApplicationUser i_User)
+        public bool IsUserInDataBase(FacebookUser i_FacebookUser)
         {
             bool result = false;
             openConnection();
+            SqlDataReader dbReader = null;
 
-            SqlDataReader dbReader = queryDataBase(string.Format
-              ("SELECT * FROM {0} WHERE {1} = {2} ",
-              eTabelsInDataBase.ApplicationUser.ToString(),
-              eTableApplicationUser_Columns.Application_User_ID.ToString(),
-              i_User.Id));
+            if (i_FacebookUser is ApplicationUser)
+            {
+                dbReader = commandDataBase(string.Format
+                  ("SELECT * FROM {0} WHERE {1} = {2} ",
+                  eTabelsInDataBase.ApplicationUser.ToString(),
+                  eTableApplicationUser_Columns.Application_User_ID.ToString(),
+                  i_FacebookUser.Id), true);
+            }
+            else
+            {
+                //facebook user is friend
+                dbReader = commandDataBase(string.Format
+                  ("SELECT * FROM {0} WHERE {1} = {2} ",
+                  eTabelsInDataBase.Friend.ToString(),
+                  eTable_Friend.Friend_ID.ToString(),
+                  i_FacebookUser.Id), true);
+            }
 
             if (dbReader.HasRows)
             {
@@ -107,7 +120,7 @@ namespace FacebookUtilitiesWebForms
         private void closeReaderAndConnection(SqlDataReader i_DbReader)
         {
             i_DbReader.Close();
-            m_DbConnection.Close();
+            closeConnection();
         }
 
         /// <summary>
@@ -123,11 +136,19 @@ namespace FacebookUtilitiesWebForms
         /// </summary>
         /// <param name="i_Query"></param>
         /// <returns></returns>
-        private SqlDataReader queryDataBase(string i_Query)
+        private SqlDataReader commandDataBase(string i_Query, bool i_IsQuery)
         {
             m_DbCommand = m_DbConnection.CreateCommand();
             m_DbCommand.CommandText = i_Query;
-            SqlDataReader dbReader = m_DbCommand.ExecuteReader();
+            SqlDataReader dbReader = null;
+            if (i_IsQuery)
+            {
+                dbReader = m_DbCommand.ExecuteReader();
+            }
+            else
+            {
+                m_DbCommand.ExecuteNonQuery();
+            }
             return dbReader;
         }
 
@@ -136,6 +157,10 @@ namespace FacebookUtilitiesWebForms
         /// Returns a dictionary by {ID,Friend}.
         /// if the user dosn't have any friends in the DB, The count field of the dictionary will 
         /// be 0
+        /// Query:
+        /// SELECT FacebookUser.*,Birthday_Greet
+        /// FROM Friend, Birthday_Messages,FacebookUser
+        /// WHERE From_Application_User_ID = '2' AND Friend_ID = To_Friend_ID and ID = Friend_ID
         /// </summary>
         /// <param name="i_User"></param>
         /// <returns></returns>
@@ -145,7 +170,7 @@ namespace FacebookUtilitiesWebForms
 
             //build query
             string query = string.Format(
-                "SELECT {0}, {1} FROM {2}, {3}, {4} WHERE {3} = {4} AND {5} = {6} AND {7} = {8}",
+                "SELECT {0}, {1} FROM {2}, {3}, {4} WHERE {5} = {6} AND {7} = {8} AND {9} = {10}",
                 addDotAndStarToString(eTabelsInDataBase.FacebookUser.ToString()),
                 eTbale_Birthday_Messages_Columns.Birthday_Greet.ToString(),
                 eTabelsInDataBase.Friend.ToString(),
@@ -158,10 +183,9 @@ namespace FacebookUtilitiesWebForms
                 eTable_FacebookUser.ID.ToString(),
                 eTable_Friend.Friend_ID.ToString());
 
-            
             openConnection();
-            SqlDataReader dbReader = queryDataBase(query);
-            /**
+            SqlDataReader dbReader = commandDataBase(query, true);
+
             //create friends from result
             while (dbReader.Read())
             {
@@ -175,16 +199,14 @@ namespace FacebookUtilitiesWebForms
 
                 //build pictures
                 Dictionary<string, string> tempFriendPics = new Dictionary<string, string>();
-                tempFriendPics[ePictureTypes.pic.ToString()] = (string)dbReader[eTable_Friends_To_Greet_Columns.Friend_Pic.ToString()];
-                tempFriendPics[ePictureTypes.pic_big.ToString()] = (string)dbReader[eTable_Friends_To_Greet_Columns.Friend_Pic_Big.ToString()];
-                tempFriendPics[ePictureTypes.pic_small.ToString()] = (string)dbReader[eTable_Friends_To_Greet_Columns.Friend_Pic_Small.ToString()];
-                tempFriendPics[ePictureTypes.pic_square.ToString()] = (string)dbReader[eTable_Friends_To_Greet_Columns.Friend_Pic_Square.ToString()];
+                tempFriendPics[ePictureTypes.pic.ToString()] = (string)dbReader[eTable_FacebookUser.Pic.ToString()];
+                tempFriendPics[ePictureTypes.pic_big.ToString()] = (string)dbReader[eTable_FacebookUser.Pic_Big.ToString()];
+                tempFriendPics[ePictureTypes.pic_small.ToString()] = (string)dbReader[eTable_FacebookUser.Pic_Small.ToString()];
+                tempFriendPics[ePictureTypes.pic_square.ToString()] = (string)dbReader[eTable_FacebookUser.Pic_Square.ToString()];
                 tempFriend.Pictures = tempFriendPics;
                 result[tempFriend.Id] = tempFriend;
             }
-             
             closeReaderAndConnection(dbReader);
-             * */
             return result;
         }
 
@@ -201,6 +223,94 @@ namespace FacebookUtilitiesWebForms
         }
 
         /// <summary>
+        /// Inserts the facebook user to the data base
+        /// </summary>
+        /// <param name="i_FacebookUser"></param>
+        public void InsertFacebookUser(FacebookUser i_FacebookUser)
+        {
+            if (!IsUserInDataBase(i_FacebookUser))
+            {
+                string insertToFacebookUserTableCommand = string.Format(
+                    "INSERT INTO {0} VALUES ({1})",
+                    eTabelsInDataBase.FacebookUser.ToString(),
+                    getValuesOfTableForUser(eTabelsInDataBase.FacebookUser, i_FacebookUser));
+
+                string insertAsPolimophicTypeCommand;
+                if (i_FacebookUser is ApplicationUser)
+                {
+                    insertAsPolimophicTypeCommand = string.Format(
+                        "INSERT INTO {0} VALUES ({1})",
+                        eTabelsInDataBase.ApplicationUser.ToString(),
+                        getValuesOfTableForUser(eTabelsInDataBase.ApplicationUser, i_FacebookUser));
+                }
+                else
+                {
+                    //insert facebook user as friend
+                    insertAsPolimophicTypeCommand = string.Format(
+                    "INSERT INTO {0} VALUES ({1})",
+                    eTabelsInDataBase.Friend.ToString(),
+                    getValuesOfTableForUser(eTabelsInDataBase.Friend, i_FacebookUser));
+                }
+
+                openConnection();
+                commandDataBase(insertToFacebookUserTableCommand, false);
+                commandDataBase(insertAsPolimophicTypeCommand, false);
+                closeConnection();
+            }
+        }
+
+        private void closeConnection()
+        {
+            m_DbConnection.Close();
+        }
+
+        private string getValuesOfTableForUser(eTabelsInDataBase i_Table, FacebookUser i_ApplicationUser)
+        {
+            string result = null;
+            if (i_Table == eTabelsInDataBase.FacebookUser)
+            {
+                result = string.Format("'{0}', '{1}', '{2}', '{3}', '{4}', '{5}', '{6}', '{7}', '{8}'",
+                    i_ApplicationUser.Id,
+                    i_ApplicationUser.FirstName,
+                    i_ApplicationUser.LastName,
+                    i_ApplicationUser.FullName,
+                    i_ApplicationUser.Pictures[ePictureTypes.pic.ToString()],
+                    i_ApplicationUser.Pictures[ePictureTypes.pic_big.ToString()],
+                    i_ApplicationUser.Pictures[ePictureTypes.pic_small.ToString()],
+                    i_ApplicationUser.Pictures[ePictureTypes.pic_square.ToString()],
+                    i_ApplicationUser.Birthday);
+            }
+
+            if (i_Table == eTabelsInDataBase.ApplicationUser)
+            {
+                ApplicationUser tempUser = i_ApplicationUser as ApplicationUser;
+                result = string.Format("'{0}', '{1}', '{2}', '{3}'",
+                tempUser.Id,
+                tempUser.Email,
+                tempUser.RegistrationDate,
+                tempUser.AccessToken);
+            }
+
+
+            if (i_Table == eTabelsInDataBase.Friend)
+            {
+                Friend tempUser = i_ApplicationUser as Friend;
+                result = string.Format("'{0}'",
+                    tempUser.Id);
+            }
+
+            if (i_Table == eTabelsInDataBase.Birthday_Messages)
+            {
+
+
+            }
+
+            return result;
+        }
+
+
+
+        /// <summary>
         /// this method recieves a user and his friends and insert them into the data base
         /// </summary>
         /// <param name="i_User"></param>
@@ -214,7 +324,7 @@ namespace FacebookUtilitiesWebForms
                     "INSERT INTO {0} VALUES ({1})",
                     eTabelsInDataBase.ApplicationUser.ToString(),
                 createValuesFromUserForInsertQuery(i_User));
-                SqlDataReader dbReader = queryDataBase(insertUserQuery);
+                SqlDataReader dbReader = commandDataBase(insertUserQuery, false);
                 closeReaderAndConnection(dbReader);
             }
         }
@@ -230,6 +340,6 @@ namespace FacebookUtilitiesWebForms
                 i_User.RegistrationDate.ToShortDateString(), i_User.Email};
             return string.Join(", ", arrayOfValues);
         }
-        
+
     }
 }
