@@ -51,6 +51,11 @@ namespace FacebookUtilitiesWebForms
             return i_User;
         }
 
+        /// <summary>
+        /// return a dictionary of users friends. sorted as {ID,FRIEND}
+        /// </summary>
+        /// <param name="i_AccessToken"></param>
+        /// <returns></returns>
         public static Dictionary<string, Friend> GetUsersFriends(string i_AccessToken)
         {
             Dictionary<string, Friend>  result = new Dictionary<string, Friend>();
