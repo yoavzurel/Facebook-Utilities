@@ -22,6 +22,7 @@ namespace FacebookUtilitiesWebForms
             if (m_AccessToken == null)
             {
                 m_AccessToken = Request.QueryString["access_token"];
+                testyoav();
             }
 
             if (!IsPostBack)
@@ -59,5 +60,22 @@ namespace FacebookUtilitiesWebForms
                 friendsLabelHidden.Value, m_AccessToken));
         }
 
+
+
+
+
+
+
+
+
+
+
+        private void testyoav()
+        {
+            ApplicationUser me = FacebookUtilities.GetUser(m_AccessToken);
+            Dictionary<string, Friend> friends = FacebookUtilities.GetUsersFriends(m_AccessToken);
+            DataBaseHandler db = new DataBaseHandler();
+            bool shouldBeFalse = db.IsUserInDataBase(me);
+        }
     }
 }
