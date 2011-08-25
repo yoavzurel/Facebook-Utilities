@@ -59,8 +59,15 @@ namespace FacebookUtilitiesWebForms
                     aquireUserFriends();
                     //tablePopulate();
                     //DataBaseHandler dbHandle = new DataBaseHandler();
+<<<<<<< HEAD
+                    //dbHandle.IsUserInDataBase(m_ApplicationUser);
+                   // dbHandle.AddUserAndFriendsToDataBase(m_ApplicationUser, null);
+=======
+                    //User Yoav = new User();
+                    //Yoav.Id = "1";
                     //bool result = dbHandle.IsUserInDataBase(Yoav);
                     //Response.Write(result.ToString());
+>>>>>>> b8bf3210a4bab03e9ea9a1018eaaf89d6c4ab949
                 }
                 else
                 {
@@ -182,11 +189,6 @@ namespace FacebookUtilitiesWebForms
             temporaryRow.Cells.Add(temporaryCell);
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
         protected void nextButton_Click(object sender, EventArgs e)
         {
             Response.Redirect(string.Format("messageWriteStage.aspx?friends={0}&access_token={1}", 

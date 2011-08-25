@@ -1,21 +1,22 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
+using System.Web;
 
 namespace FacebookUtilitiesWebForms
 {
+
     /// <summary>
-    /// this class represents the user (facebok user) of the application.
+    /// this class represents a Facebook User
     /// </summary>
-    public class User
+    public class FacebookUser
     {
+
         private string m_Id;
         private string m_FullName;
         private string m_FirstName;
         private string m_LastName;
         private Dictionary<string, string> m_Pictures;
-        private string m_AccessToken;
 
         public string Id
         {
@@ -80,22 +81,6 @@ namespace FacebookUtilitiesWebForms
             set
             {
                 m_Pictures = value;
-            }
-        }
-
-        /// <summary>
-        /// this property assign an access token to the user.
-        /// the access token is individual per user.
-        /// </summary>
-        public string AccessToken 
-        {
-            get
-            {
-                return m_AccessToken;
-            }
-            set
-            {
-                m_AccessToken = value;
             }
         }
     }
