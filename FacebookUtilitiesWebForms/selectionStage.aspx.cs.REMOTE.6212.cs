@@ -31,7 +31,7 @@ namespace FacebookUtilitiesWebForms
         /// the user friends dictionary is orderd by : {id,friend} 
         /// </summary>
         private Dictionary<string,Friend> m_UserFriends;
-        private ApplicationUser m_ApplicationUser;
+        private User m_ApplicationUser;
         private FacebookClient m_FacebookClient;
 
         private string m_FriendsFromClient;
@@ -59,6 +59,8 @@ namespace FacebookUtilitiesWebForms
                     aquireUserFriends();
                     //tablePopulate();
                     //DataBaseHandler dbHandle = new DataBaseHandler();
+                    //User Yoav = new User();
+                    //Yoav.Id = "1";
                     //bool result = dbHandle.IsUserInDataBase(Yoav);
                     //Response.Write(result.ToString());
                 }
@@ -89,7 +91,7 @@ namespace FacebookUtilitiesWebForms
             }
         }
 
-        private static void createUserFromDynamicUser(dynamic i_DynamicUser, FacebookUser i_User)
+        private static void createUserFromDynamicUser(dynamic i_DynamicUser, User i_User)
         {
             i_User.Id = i_DynamicUser.uid;
             i_User.FullName = i_DynamicUser.name;
@@ -114,7 +116,7 @@ namespace FacebookUtilitiesWebForms
         /// </summary>
         private void aquireUser()
         {
-            m_ApplicationUser = new ApplicationUser();
+            m_ApplicationUser = new User();
             dynamic me = m_FacebookClient.Query(
              "SELECT uid, name, first_name, last_name, pic_small, pic_big, pic_square, pic FROM user WHERE uid = me()");
             createUserFromDynamicUser(me[0], m_ApplicationUser);

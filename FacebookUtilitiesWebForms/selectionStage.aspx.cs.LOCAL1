@@ -38,11 +38,6 @@ namespace FacebookUtilitiesWebForms
 
         protected void Page_Load(object sender, EventArgs e)
         {
-            if (m_AccessToken == null)
-            {
-                m_AccessToken = Request.QueryString["access_token"];
-            }
-
             if (!IsPostBack)
             {
                 if (Request.QueryString["action"] == "next")
@@ -51,7 +46,7 @@ namespace FacebookUtilitiesWebForms
                 }
 
                 //first time in the stage
-                //m_AccessToken = Request.QueryString["access_token"];
+                m_AccessToken = Request.QueryString["access_token"];
                 if (!string.IsNullOrEmpty(m_AccessToken))
                 {
                     m_FacebookClient = new FacebookClient(m_AccessToken);
@@ -59,8 +54,8 @@ namespace FacebookUtilitiesWebForms
                     aquireUserFriends();
                     //tablePopulate();
                     //DataBaseHandler dbHandle = new DataBaseHandler();
-                    //bool result = dbHandle.IsUserInDataBase(Yoav);
-                    //Response.Write(result.ToString());
+                    //dbHandle.IsUserInDataBase(m_ApplicationUser);
+                   // dbHandle.AddUserAndFriendsToDataBase(m_ApplicationUser, null);
                 }
                 else
                 {
@@ -126,6 +121,8 @@ namespace FacebookUtilitiesWebForms
         /// </summary>
         private void tablePopulate()
         {
+            // Hidding the table for debug
+            //friendsTable.Visible = false;
 
             // Table styling
             friendsTable.CellPadding = 5;
@@ -184,8 +181,7 @@ namespace FacebookUtilitiesWebForms
 
         protected void nextButton_Click(object sender, EventArgs e)
         {
-            Response.Redirect(string.Format("messageWriteStage.aspx?friends={0}&access_token={1}", 
-                friendsLabelHidden.Value, m_AccessToken));
+            Response.Redirect(string.Format("messageWriteStage.aspx?friends={0}", friendsLabelHidden.Value));
         }
 
     }

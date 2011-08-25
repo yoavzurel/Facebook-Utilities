@@ -27,6 +27,9 @@ namespace FacebookUtilitiesWebForms
 
         protected void Page_Load(object sender, EventArgs e)
         {
+<<<<<<< HEAD
+            m_Friends = Request.QueryString["friendsList"];
+=======
             if (!IsPostBack && Request.QueryString["friends"] != null)
             {
                 m_FriendsStringArray = Request.QueryString["friends"].Split(',');
@@ -38,6 +41,12 @@ namespace FacebookUtilitiesWebForms
                     aquireUser();
                     aquireUserFriends();
                     populateTableWithFriends();
+                    //----------------tablePopulate();
+                    //DataBaseHandler dbHandle = new DataBaseHandler();
+                    //User Yoav = new User();
+                    //Yoav.Id = "1";
+                    //bool result = dbHandle.IsUserInDataBase(Yoav);
+                    //Response.Write(result.ToString());
                 }
                 else
                 {
@@ -45,6 +54,8 @@ namespace FacebookUtilitiesWebForms
                 }
             }
         }
+
+
         /// <summary>
         /// setting up the friends list
         /// </summary>
@@ -79,6 +90,7 @@ namespace FacebookUtilitiesWebForms
             tempFriendPics[ePictureTypes.pic_square.ToString()] = i_DynamicUser.pic_square;
             tempFriendPics[ePictureTypes.pic.ToString()] = i_DynamicUser.pic;
             i_User.Pictures = tempFriendPics;
+>>>>>>> b8bf3210a4bab03e9ea9a1018eaaf89d6c4ab949
         }
 
         /// <summary>

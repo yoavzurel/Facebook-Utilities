@@ -75,6 +75,7 @@
       <DependentUpon>default.aspx</DependentUpon>
     </Compile>
     <Compile Include="FacebookLoginAuthintication.cs" />
+    <Compile Include="FacebookUser.cs" />
     <Compile Include="Friend.cs" />
     <Compile Include="messageWriteStage.aspx.cs">
       <DependentUpon>messageWriteStage.aspx</DependentUpon>
@@ -91,7 +92,7 @@
     <Compile Include="selectionStage.aspx.designer.cs">
       <DependentUpon>selectionStage.aspx</DependentUpon>
     </Compile>
-    <Compile Include="User.cs" />
+    <Compile Include="ApplicationUser.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />

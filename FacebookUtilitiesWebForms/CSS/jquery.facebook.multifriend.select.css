@@ -233,6 +233,8 @@ a#link{
 	background: url(../images/roundtext.gif) no-repeat top left;
 	height: 60px;
 	width: 230px;
+    border: 0;
+    margin-top: 3px;
 }
 .ta5a{
 	border: 0;
