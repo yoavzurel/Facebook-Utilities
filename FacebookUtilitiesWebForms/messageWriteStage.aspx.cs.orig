@@ -47,8 +47,6 @@ namespace FacebookUtilitiesWebForms
             }
         }
 
-   
-
 
 
         private void populateTableWithFriends()
@@ -65,6 +63,11 @@ namespace FacebookUtilitiesWebForms
             }
         }
 
+<<<<<<< HEAD
+        private void testYoav()
+        {
+
+=======
         /// <summary>
         /// The event that takes care of the clicked button inside the table of friends.
         /// </summary>
@@ -76,33 +79,7 @@ namespace FacebookUtilitiesWebForms
             tempFriend.BirthdayMessage = i_BirthdayWish;
 
             // Needs to send them to DB
-        }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        private void testYoav()
-        {
-            DataBaseHandler db = new DataBaseHandler();
+>>>>>>> d7206b639c46f3d596ff801c8db5f82975bd00d9
         }
     }
 }

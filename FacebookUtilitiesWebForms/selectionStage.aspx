@@ -59,11 +59,11 @@
               <div>
                   <!--<div id="username"></div>-->
                   <!--  -->
-                  <a href="#" id="show-friends" style="display:none;font-size=x-large;">Submit</a>
+                  <a href="#" id="show-friends" style="display:none;font-size:x-large;">Submit</a>
                   <form id="form1" runat="server">
                         <div>
                             <input id="friendsLabelHidden" type="hidden" runat="server" />
-                            <asp:Button ID="button23" runat="server" OnClick="nextButton_Click" Text="Next" class="button"/>
+                            <asp:Button ID="button23" runat="server" OnClick="nextButton_Click" Text="Next" CssClass="button"/>
 
                         </div>
                   </form>

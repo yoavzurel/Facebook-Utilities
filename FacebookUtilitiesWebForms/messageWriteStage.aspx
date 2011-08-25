@@ -15,6 +15,8 @@
     <div>
         <asp:Table ID="friendsTable" runat="server">
         </asp:Table>
+        <br />
+        <asp:Button ID="finishButton" runat="server" text="Finish" CssClass="button" />
     </div>
     </form>
 </body>

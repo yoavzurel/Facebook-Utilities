@@ -12,6 +12,10 @@ namespace FacebookUtilitiesWebForms
     /// </summary>
     public class TableMessageRow : TableRow
     {
+        
+        // Event to pass the wish when button clicked
+        public event SubmitWishesClicked SubmitClicked;
+
         public TableMessageRow(Friend i_Friend)
         {
             if (i_Friend != null)
@@ -110,12 +114,19 @@ namespace FacebookUtilitiesWebForms
         {
             this.ConfirmButton.CssClass = "button";
             this.ConfirmButton.Text = "Confirm";
+            this.ConfirmButton.ID = this.Friend.Id;
             this.ConfirmButton.Click += new EventHandler(ConfirmButton_Click);
         }
 
-        void ConfirmButton_Click(object sender, EventArgs e)
+        public void ConfirmButton_Click(object sender, EventArgs e)
         {
-            throw new NotImplementedException();
+            if (SubmitClicked != null)
+            {
+                string birtdayMessage = this.TextBox.Text;
+                SubmitClicked(birtdayMessage, this.Friend);
+                this.ConfirmButton.Text = "Confirmed";
+                this.ConfirmButton.Enabled = false;
+            }
         }
 
         private void setRowProperties()
