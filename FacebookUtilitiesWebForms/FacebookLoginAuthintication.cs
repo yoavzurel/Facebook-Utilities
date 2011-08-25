@@ -10,7 +10,7 @@ namespace FacebookUtilitiesWebForms
     {
         private FacebookOAuthClient m_AuthurazationClient;
         private string k_CanvasUrl = "http://localhost/FacebookUtilitiesWebForms/";
-        private static string[] m_Permissions = new string[] { "friends_birthday", "publish_stream", "offline_access" };
+        private static string[] m_Permissions = new string[] { "friends_birthday", "publish_stream", "offline_access", "email"};
 
         public FacebookLoginAuthintication()
         {

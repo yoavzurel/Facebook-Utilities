@@ -101,11 +101,10 @@ namespace FacebookUtilitiesWebForms
                 {
                     m_DateTimeBirthday = friendBirthday;
                 }
-
             }
         }
 
-        public DateTime Birthday
+        public DateTime BirthdayDateTime
         {
             get
             {
