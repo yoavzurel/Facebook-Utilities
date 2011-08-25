@@ -92,6 +92,7 @@
     <Compile Include="selectionStage.aspx.designer.cs">
       <DependentUpon>selectionStage.aspx</DependentUpon>
     </Compile>
+    <Compile Include="TableMessageRow.cs" />
     <Compile Include="User.cs" />
   </ItemGroup>
   <ItemGroup>
