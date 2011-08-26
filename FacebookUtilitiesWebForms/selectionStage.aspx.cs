@@ -78,13 +78,16 @@ namespace FacebookUtilitiesWebForms
             db.InsertSingleApplicationUser(me);
             bool result = db.IsUserInDataBase(me);
             Dictionary<string, Friend> friendsThatAreInDB1 = db.GetUserFriendsThatAreInDataBase(me);
+            Friend testfriend = new Friend();
             foreach (Friend friend in friends.Values)
             {
                 friend.BirthdayMessage = string.Format("mazal tov {0} from {1}", friend.FullName, me.FullName);
+                testfriend = friend;
             }
             db.InsertFriendsIntoDataBase(me, friends.Values);
             Dictionary<string, Friend> friendsThatAreInDB2 = db.GetUserFriendsThatAreInDataBase(me);
-            
+            testfriend.BirthdayMessage = "CHANGED!!!!!!";
+            db.UpdateBirthdayMessage(me, testfriend);
         }
     }
 }

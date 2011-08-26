@@ -438,6 +438,31 @@ namespace FacebookUtilitiesWebForms
             closeDataBaseReader(dbReader);
             return result;
         }
+
+        /// <summary>
+        /// this method updates the message from an applicatoin user to his friend.
+        /// this method assumes that there was a message before and both the user and friend are in the db
+        /// </summary>
+        /// <param name="i_ApplicationUser"></param>
+        /// <param name="i_Friend"></param>
+        public void UpdateBirthdayMessage(ApplicationUser i_ApplicationUser, Friend i_Friend)
+        {
+            openConnection();
+            if (checkIfUserIsInDataBaseWithOutConnection(i_ApplicationUser) && checkIfUserIsInDataBaseWithOutConnection(i_Friend) && messageIsInDatabaseWithoutConnection(i_ApplicationUser,i_Friend))
+            {
+                string command = string.Format(
+                    "UPDATE {0} SET {1} = '{2}' WHERE {3} = {4} AND {5} = {6}",
+                    eTabelsInDataBase.Birthday_Messages.ToString(),
+                    eTbale_Birthday_Messages_Columns.Birthday_Greet.ToString(),
+                    i_Friend.BirthdayMessage,
+                    eTbale_Birthday_Messages_Columns.To_Friend_ID.ToString(),
+                    i_Friend.Id,
+                    eTbale_Birthday_Messages_Columns.From_Application_User_ID.ToString(),
+                    i_ApplicationUser.Id);
+                commandDataBase(command, false);
+            }
+            closeConnection();
+        }
     }
 }
 
