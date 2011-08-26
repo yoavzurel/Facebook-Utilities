@@ -82,8 +82,21 @@ namespace FacebookUtilitiesWebForms
         /// <returns></returns>
         public bool IsUserInDataBase(FacebookUser i_FacebookUser)
         {
-            bool result = false;
             openConnection();
+            bool result = checkIfUserIsInDataBaseWithOutConnection(i_FacebookUser);
+            closeConnection();
+            return result;
+        }
+
+
+        /// <summary>
+        /// checks if the user is in the data base without connecting to data base
+        /// </summary>
+        /// <param name="i_FacebookUser"></param>
+        /// <returns></returns>
+        private bool checkIfUserIsInDataBaseWithOutConnection(FacebookUser i_FacebookUser)
+        {
+            bool result = false;
             SqlDataReader dbReader = null;
 
             if (i_FacebookUser is ApplicationUser)
@@ -96,12 +109,24 @@ namespace FacebookUtilitiesWebForms
             }
             else
             {
-                //facebook user is friend
-                dbReader = commandDataBase(string.Format
-                  ("SELECT * FROM {0} WHERE {1} = {2} ",
-                  eTabelsInDataBase.Friend.ToString(),
-                  eTable_Friend.Friend_ID.ToString(),
-                  i_FacebookUser.Id), true);
+                if (i_FacebookUser is Friend)
+                {
+                    //facebook user is friend
+                    dbReader = commandDataBase(string.Format
+                      ("SELECT * FROM {0} WHERE {1} = {2} ",
+                      eTabelsInDataBase.Friend.ToString(),
+                      eTable_Friend.Friend_ID.ToString(),
+                      i_FacebookUser.Id), true);
+                }
+                else
+                {
+                    //only facebook user
+                    dbReader = commandDataBase(string.Format
+                      ("SELECT * FROM {0} WHERE {1} = {2} ",
+                      eTabelsInDataBase.FacebookUser.ToString(),
+                      eTable_FacebookUser.ID.ToString(),
+                      i_FacebookUser.Id), true);
+                }
             }
 
             if (dbReader.HasRows)
@@ -109,7 +134,7 @@ namespace FacebookUtilitiesWebForms
                 result = true;
             }
 
-            closeReaderAndConnection(dbReader);
+            closeDataBaseReader(dbReader);
             return result;
         }
 
@@ -119,8 +144,13 @@ namespace FacebookUtilitiesWebForms
         /// <param name="i_DbReader"></param>
         private void closeReaderAndConnection(SqlDataReader i_DbReader)
         {
-            i_DbReader.Close();
+            closeDataBaseReader(i_DbReader);
             closeConnection();
+        }
+
+        private static void closeDataBaseReader(SqlDataReader i_DbReader)
+        {
+            i_DbReader.Close();
         }
 
         /// <summary>
@@ -190,7 +220,7 @@ namespace FacebookUtilitiesWebForms
             while (dbReader.Read())
             {
                 Friend tempFriend = new Friend();
-                tempFriend.Id = (string)dbReader[eTable_FacebookUser.ID.ToString()];
+                tempFriend.Id = dbReader[eTable_FacebookUser.ID.ToString()].ToString();
                 tempFriend.FirstName = (string)dbReader[eTable_FacebookUser.First_Name.ToString()];
                 tempFriend.LastName = (string)dbReader[eTable_FacebookUser.Last_Name.ToString()];
                 tempFriend.FullName = (string)dbReader[eTable_FacebookUser.Full_Name.ToString()];
@@ -223,34 +253,21 @@ namespace FacebookUtilitiesWebForms
         }
 
         /// <summary>
-        /// Inserts the facebook user to the data base
+        /// Inserts a single application user to the data base
         /// </summary>
-        /// <param name="i_FacebookUser"></param>
-        public void InsertFacebookUser(FacebookUser i_FacebookUser)
+        /// <param name="i_ApplicationUser"></param>
+        public void InsertSingleApplicationUser(ApplicationUser i_ApplicationUser)
         {
-            if (!IsUserInDataBase(i_FacebookUser))
+            if (!IsUserInDataBase(i_ApplicationUser))
             {
-                string insertToFacebookUserTableCommand = getCommandInsertFacebookUserInDataBase(i_FacebookUser);
-
-                string insertAsPolimophicTypeCommand;
-                if (i_FacebookUser is ApplicationUser)
-                {
-                    insertAsPolimophicTypeCommand = getCommandInsertApplicationUserIntoDataBase(i_FacebookUser);
-                }
-                else
-                {
-                    //insert facebook user as friend
-                    insertAsPolimophicTypeCommand = getCommandInsertFriendIntoDataBase(i_FacebookUser);
-                }
-
                 openConnection();
-                commandDataBase(insertToFacebookUserTableCommand, false);
-                commandDataBase(insertAsPolimophicTypeCommand, false);
+                commandDataBase(getInsertCommandForFacebookUserInDataBase(i_ApplicationUser), false);
+                commandDataBase(getInsertCommandForApplicationUserIntoDataBase(i_ApplicationUser), false);
                 closeConnection();
             }
         }
 
-        private string getCommandInsertFriendIntoDataBase(FacebookUser i_FacebookUser)
+        private string getInsertCommandForFriendIntoDataBase(FacebookUser i_FacebookUser)
         {
             return string.Format(
                                 "INSERT INTO {0} VALUES ({1})",
@@ -258,7 +275,7 @@ namespace FacebookUtilitiesWebForms
                                 getValuesOfTableForUser(eTabelsInDataBase.Friend, i_FacebookUser));
         }
 
-        private string getCommandInsertApplicationUserIntoDataBase(FacebookUser i_FacebookUser)
+        private string getInsertCommandForApplicationUserIntoDataBase(FacebookUser i_FacebookUser)
         {
             return string.Format(
                                     "INSERT INTO {0} VALUES ({1})",
@@ -266,7 +283,7 @@ namespace FacebookUtilitiesWebForms
                                     getValuesOfTableForUser(eTabelsInDataBase.ApplicationUser, i_FacebookUser));
         }
 
-        private string getCommandInsertFacebookUserInDataBase(FacebookUser i_FacebookUser)
+        private string getInsertCommandForFacebookUserInDataBase(FacebookUser i_FacebookUser)
         {
             return string.Format(
                                 "INSERT INTO {0} VALUES ({1})",
@@ -274,7 +291,7 @@ namespace FacebookUtilitiesWebForms
                                 getValuesOfTableForUser(eTabelsInDataBase.FacebookUser, i_FacebookUser));
         }
 
-        private string getCommandInsertBirthdayMessageIntoDataBase(FacebookUser i_FacebookUser, ApplicationUser i_ApplicationUser)
+        private string getInsertCommandForBirthdayMessageIntoDataBase(FacebookUser i_FacebookUser, ApplicationUser i_ApplicationUser)
         {
             return string.Format(
                                 "INSERT INTO {0} VALUES ({1}, {2})",
@@ -288,6 +305,12 @@ namespace FacebookUtilitiesWebForms
             m_DbConnection.Close();
         }
 
+        /// <summary>
+        /// returns the values for a given user and a table in INSERT syntex
+        /// </summary>
+        /// <param name="i_Table"></param>
+        /// <param name="i_FacebookUser"></param>
+        /// <returns></returns>
         private string getValuesOfTableForUser(eTabelsInDataBase i_Table, FacebookUser i_FacebookUser)
         {
             string result = null;
@@ -315,7 +338,6 @@ namespace FacebookUtilitiesWebForms
                 tempUser.AccessToken);
             }
 
-
             if (i_Table == eTabelsInDataBase.Friend)
             {
                 Friend tempUser = i_FacebookUser as Friend;
@@ -336,39 +358,87 @@ namespace FacebookUtilitiesWebForms
 
 
         /// <summary>
-        /// this methods inserts a list of friends into the db
+        /// this methods inserts a list of friends into the db.
+        /// will only work if the application user is already in db.
         /// </summary>
         /// <param name="i_ApplicationUser"></param>
         /// <param name="i_FriendsToInsert"></param>
         public void InsertFriendsIntoDataBase(ApplicationUser i_ApplicationUser, ICollection<Friend> i_FriendsToInsert)
         {
-            List<string> insertFacebookUsersCommands = new List<string>();
-            List<string> insertFriendsCommands = new List<string>();
-            List<string> insertBirthdayMessageCommands = new List<string>();
-
+            string[] insertFacebookUsersCommands = new string[i_FriendsToInsert.Count];
+            string[] insertFriendsCommands = new string[i_FriendsToInsert.Count];
+            string[] insertBirthdayMessageCommands = new string[i_FriendsToInsert.Count];
+            int i = 0;
+           
+            //building queries foreach friend
             foreach (Friend friend in i_FriendsToInsert)
             {
-                if (IsUserInDataBase(friend))
-                {
-                    insertFacebookUsersCommands.Add(getCommandInsertFacebookUserInDataBase(friend));
-                    insertFriendsCommands.Add(getCommandInsertFriendIntoDataBase(friend));
-                    insertBirthdayMessageCommands.Add(getCommandInsertBirthdayMessageIntoDataBase(friend, i_ApplicationUser));
-                }
+                insertFacebookUsersCommands[i] = (getInsertCommandForFacebookUserInDataBase(friend));
+                insertFriendsCommands[i] = (getInsertCommandForFriendIntoDataBase(friend));
+                insertBirthdayMessageCommands[i] = (getInsertCommandForBirthdayMessageIntoDataBase(friend, i_ApplicationUser));
+                i++;
             }
+
+            openConnection();
+
+            i = 0;
+            //inserting users
+            FacebookUser tempFacebookUser = new FacebookUser();
+            foreach (Friend friend in i_FriendsToInsert)
+            {
+
+                //check if the facebook user isn't in db
+                tempFacebookUser.Id = friend.Id;
+                if (!checkIfUserIsInDataBaseWithOutConnection(tempFacebookUser))
+                {
+                    commandDataBase(insertFacebookUsersCommands[i], false);
+                }
+
+                //check if the friend isn't in db
+                if (!checkIfUserIsInDataBaseWithOutConnection(friend))
+                {
+                    commandDataBase(insertFriendsCommands[i], false);
+                }
+
+                //check if message isn't in db
+                if (!messageIsInDatabaseWithoutConnection(i_ApplicationUser, friend))
+                {
+                    commandDataBase(insertBirthdayMessageCommands[i], false);
+                }
+                i++;
+            }
+
+            closeConnection();
         }
 
-
-        private string createValuesFromUserForInsertQuery(ApplicationUser i_User)
+        /// <summary>
+        /// checks if a given messgae i.e. combination of appuser-friend is in db
+        /// </summary>
+        /// <param name="i_ApplicationUser"></param>
+        /// <param name="i_Friend"></param>
+        /// <returns></returns>
+        private bool messageIsInDatabaseWithoutConnection(ApplicationUser i_ApplicationUser, Friend i_Friend)
         {
-            string[] arrayOfValues = new string[]{
-                i_User.Id, i_User.FirstName, i_User.LastName, i_User.FullName,
-                i_User.AccessToken, i_User.Pictures[ePictureTypes.pic.ToString()],
-                i_User.Pictures[ePictureTypes.pic_big.ToString()],
-                i_User.Pictures[ePictureTypes.pic_small.ToString()],
-                i_User.Pictures[ePictureTypes.pic_square.ToString()],
-                i_User.RegistrationDate.ToShortDateString(), i_User.Email};
-            return string.Join(", ", arrayOfValues);
-        }
+            bool result = false;
+            SqlDataReader dbReader = null;
+            string query = string.Format(
+                "SELECT * FROM {0} WHERE {1} = {2} AND {3} = {4}",
+                   eTabelsInDataBase.Birthday_Messages.ToString(),
+                   eTbale_Birthday_Messages_Columns.From_Application_User_ID.ToString(),
+                   i_ApplicationUser.Id,
+                   eTbale_Birthday_Messages_Columns.To_Friend_ID.ToString(),
+                   i_Friend.Id);
 
+            dbReader = commandDataBase(query, true);
+            if (dbReader.HasRows)
+            {
+                result = true;
+            }
+
+            closeDataBaseReader(dbReader);
+            return result;
+        }
     }
 }
+
+

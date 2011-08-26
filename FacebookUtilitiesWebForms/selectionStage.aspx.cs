@@ -75,13 +75,16 @@ namespace FacebookUtilitiesWebForms
             ApplicationUser me = FacebookUtilities.GetUser(m_AccessToken);
             Dictionary<string, Friend> friends = FacebookUtilities.GetUsersFriends(m_AccessToken);
             DataBaseHandler db = new DataBaseHandler();
-            db.InsertFacebookUser(me);
+            db.InsertSingleApplicationUser(me);
+            bool result = db.IsUserInDataBase(me);
+            Dictionary<string, Friend> friendsThatAreInDB1 = db.GetUserFriendsThatAreInDataBase(me);
             foreach (Friend friend in friends.Values)
             {
-                db.InsertFacebookUser(friend);
+                friend.BirthdayMessage = string.Format("mazal tov {0} from {1}", friend.FullName, me.FullName);
             }
-            Dictionary<string,Friend> pals = db.GetUserFriendsThatAreInDataBase(me);
             db.InsertFriendsIntoDataBase(me, friends.Values);
+            Dictionary<string, Friend> friendsThatAreInDB2 = db.GetUserFriendsThatAreInDataBase(me);
+            
         }
     }
 }
