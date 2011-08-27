@@ -36,11 +36,9 @@ namespace HandleBirthdaysOnServer
         /// </summary>
         private static void activateBirthdayService(Object stateInfo)
         {
-            System.Console.WriteLine("here");
-            /*
+            System.Console.WriteLine("starting birthday service");
             BirthdayService birthdayService = new BirthdayService();
             birthdayService.Run();
-             * */
         }
     }
 }

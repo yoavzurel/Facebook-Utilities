@@ -13,12 +13,19 @@ namespace HandleBirthdaysOnServer
     {
         private ApplicationUser applicationUser;
         private List<Friend> list;
+        private UserAndFriendsRelationship job;
 
         public BirthdayMessageSender(ApplicationUser applicationUser, List<Friend> list)
         {
             // TODO: Complete member initialization
             this.applicationUser = applicationUser;
             this.list = list;
+        }
+
+        public BirthdayMessageSender(UserAndFriendsRelationship job)
+        {
+            // TODO: Complete member initialization
+            this.job = job;
         }
 
         internal List<Friend> SendBirthdayMessages()

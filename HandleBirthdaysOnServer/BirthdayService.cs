@@ -15,7 +15,7 @@ namespace HandleBirthdaysOnServer
         /// <summary>
         /// this dictionarry holds for each application user the list of friends he wants to greet
         /// </summary>
-        Dictionary<ApplicationUser, List<Friend>> m_ListOfFriendsToGreetForEachApplicationUser;
+        List<UserAndFriendsRelationship> m_GreetingJobs;
 
         /// <summary>
         /// this method starts the birthday service
@@ -24,11 +24,11 @@ namespace HandleBirthdaysOnServer
         {
             if (serviceNeedsToWork())
             {
-                foreach (ApplicationUser applicationUser in m_ListOfFriendsToGreetForEachApplicationUser.Keys)
+                foreach (UserAndFriendsRelationship job in m_GreetingJobs)
                 {
-                    BirthdayMessageSender birthdayMessageSender = new BirthdayMessageSender(applicationUser, m_ListOfFriendsToGreetForEachApplicationUser[applicationUser]);
+                    BirthdayMessageSender birthdayMessageSender = new BirthdayMessageSender(job);
                     List<Friend> listOfFriendsThatGotGreetedSuccessfully = birthdayMessageSender.SendBirthdayMessages();
-                    EmailSender emailSender = new EmailSender(applicationUser, listOfFriendsThatGotGreetedSuccessfully);
+                    EmailSender emailSender = new EmailSender(job.ApplicationUser, listOfFriendsThatGotGreetedSuccessfully);
                     emailSender.SendApplicationUserTodaysGreetingStatus();
                 }
             }
@@ -43,8 +43,8 @@ namespace HandleBirthdaysOnServer
         {
             bool result = false;
             DataBaseHandler db = new DataBaseHandler();
-            m_ListOfFriendsToGreetForEachApplicationUser = db.GetFriendsOfApplicationUsersWithBirthdaysToday();
-            if (m_ListOfFriendsToGreetForEachApplicationUser.Count != 0)
+            m_GreetingJobs = db.GetFriendsOfApplicationUsersWithBirthdaysToday();
+            if (m_GreetingJobs.Count != 0)
             {
                 result = true;
             }

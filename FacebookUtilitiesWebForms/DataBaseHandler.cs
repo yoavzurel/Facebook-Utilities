@@ -464,9 +464,32 @@ namespace FacebookUtilitiesWebForms
             closeConnection();
         }
 
-        public Dictionary<ApplicationUser, List<Friend>> GetFriendsOfApplicationUsersWithBirthdaysToday()
+        /// <summary>
+        /// returns a dictionary containing for each application user his friends to greet today
+        /// </summary>
+        /// <returns></returns>
+        public List<UserAndFriendsRelationship> GetFriendsOfApplicationUsersWithBirthdaysToday()
         {
-            throw new NotImplementedException();
+            List<UserAndFriendsRelationship> result = new List<UserAndFriendsRelationship>();
+            string query = string.Format(
+                "SELECT {0}, {1}, {2} FROM {3}, {4}, {5}, {6} WHERE {7} = {8} AND {7} = {9} AND {10} = {11} and MONTH({12}) = MONTH(getdate()) AND DAY({12}) = DAY(getdate())",
+                eTbale_Birthday_Messages_Columns.From_Application_User_ID.ToString(),
+                eTbale_Birthday_Messages_Columns.To_Friend_ID.ToString(),
+                eTbale_Birthday_Messages_Columns.Birthday_Greet.ToString(),
+                eTabelsInDataBase.ApplicationUser.ToString(),
+                eTabelsInDataBase.Birthday_Messages.ToString(),
+                eTabelsInDataBase.FacebookUser.ToString(),
+                eTabelsInDataBase.Friend.ToString(),
+                eTable_Friend.Friend_ID.ToString(),
+                eTable_FacebookUser.ID.ToString(),
+                eTbale_Birthday_Messages_Columns.To_Friend_ID.ToString(),
+                eTableApplicationUser_Columns.Application_User_ID.ToString(),
+                eTbale_Birthday_Messages_Columns.From_Application_User_ID.ToString(),
+                eTable_FacebookUser.Birthday.ToString());
+             
+            
+
+            return result;
         }
     }
 }
