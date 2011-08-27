@@ -4,7 +4,7 @@
 
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-    <link rel="stylesheet" href="CSS/jquery.facebook.multifriend.select.css" /> 
+    <link rel="stylesheet" href="CSS/jquery.facebook.multifriend.select.css" />
     <title></title>
 </head>
 <body>
@@ -12,7 +12,7 @@
     <div class="top_area">Welcome to the utility</div>
     <div id="search_area"></div>
     <div>
-        <asp:Table ID="friendsTable" runat="server">
+        <asp:Table ID="welcomeTable" runat="server">
         </asp:Table>
     </div>
     </form>
