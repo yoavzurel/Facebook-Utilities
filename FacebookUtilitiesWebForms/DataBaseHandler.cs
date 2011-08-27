@@ -463,6 +463,11 @@ namespace FacebookUtilitiesWebForms
             }
             closeConnection();
         }
+
+        public Dictionary<ApplicationUser, List<Friend>> GetFriendsOfApplicationUsersWithBirthdaysToday()
+        {
+            throw new NotImplementedException();
+        }
     }
 }
 
