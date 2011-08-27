@@ -49,7 +49,7 @@ namespace FacebookUtilitiesWebForms
                 //redirect to the selection stage with the access token
                 dynamic m_AccessToken = m_FacebookLoginClient.RetrieveAccessToken(m_Code);
                 string accessToken = m_AccessToken.access_token;
-                Response.Redirect(string.Format("selectionStage.aspx?access_token={0}", accessToken));
+                Response.Redirect(string.Format("welcomeStage.aspx?access_token={0}", accessToken));
             }
             else
             {

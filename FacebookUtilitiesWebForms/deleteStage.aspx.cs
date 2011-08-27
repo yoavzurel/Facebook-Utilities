@@ -90,7 +90,7 @@ namespace FacebookUtilitiesWebForms
             if (temporaryFriend != null)
             {
                 // NEEDS TO CREATE THIS METHOD
-                m_DataBaseHandlerObject.DeleteFriendFromDatabase(m_ApplicationUser, temporaryFriend);
+                //m_DataBaseHandlerObject.DeleteFriendFromDatabase(m_ApplicationUser, temporaryFriend);
             }
 
         }
