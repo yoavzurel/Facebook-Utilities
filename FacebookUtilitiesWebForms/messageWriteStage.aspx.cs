@@ -26,6 +26,8 @@ namespace FacebookUtilitiesWebForms
         /// </summary>
         private readonly List<TextBox> m_ListOfTextBoxes = new List<TextBox>();
 
+        private DataBaseHandler m_DataBaseHandlerObject;
+
         protected void Page_Load(object sender, EventArgs e)
         {
             if (!string.IsNullOrEmpty(Request.QueryString["friends"]))
@@ -71,10 +73,55 @@ namespace FacebookUtilitiesWebForms
         /// <param name="i_FriendWithBirthday">The friend that needs to receive the wish</param>
         public void temporaryMessageRow_SubmitClicked(string i_BirthdayWish, Friend i_FriendWithBirthday)
         {
-            Friend tempFriend = i_FriendWithBirthday;
-            tempFriend.BirthdayMessage = i_BirthdayWish;
+            // Adds the birthday wish to the correct friend.
+            if (m_UserFriends[i_FriendWithBirthday.Id] != null)
+            {
+                m_UserFriends[i_FriendWithBirthday.Id].BirthdayMessage = i_BirthdayWish;
+            }
+            
+        }
 
-            // Needs to send them to DB
+        /// <summary>
+        /// Executed when the finish button is clicked.
+        /// This method should invoke a call to the database and add
+        /// new messages to user's friend.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        protected void finishButton_Click(object sender, EventArgs e)
+        {
+            m_DataBaseHandlerObject = new DataBaseHandler();
+            List<Friend> listOfFriendsToInsertMessage = new List<Friend>();
+            Friend currentFriend;
+
+            // Adds all friends that have a message to be inserted, to the list
+            // of friends.
+            foreach (String stringiD in m_FriendsStringArray)
+            {
+                currentFriend = m_UserFriends[stringiD];
+                if (!string.IsNullOrEmpty(currentFriend.BirthdayMessage))
+                {
+                    listOfFriendsToInsertMessage.Add(currentFriend);
+                }
+            }
+
+            // Insert friends with message to database
+            m_DataBaseHandlerObject.InsertFriendsIntoDataBase(m_ApplicationUser, listOfFriendsToInsertMessage);
+
+            // Returns to the welcomeStage
+            Response.Redirect(string.Format("welcomeStage.aspx?access_token={0}", m_AccessToken));
+        }
+
+        /// <summary>
+        /// This method should should return the user
+        /// to the welcome screen without invoking the database insert.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        protected void cancelButton_Click(object sender, EventArgs e)
+        {
+            // Returns to the welcomeStage
+            Response.Redirect(string.Format("welcomeStage.aspx?access_token={0}", m_AccessToken));
         }
     }
 }
