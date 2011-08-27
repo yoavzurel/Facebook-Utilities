@@ -10,8 +10,14 @@
 </head>
 <body>
     <form id="form1" runat="server">
+    <div class="top_area">Delete friends and messages</div>
+    <div id="search_area"></div>
     <div>
-    <p>Delete Stage</p>
+        <asp:Table ID="friendsTable" runat="server">
+        </asp:Table>
+        
+        <asp:Button ID="finishButton" runat="server" text="Finish" CssClass="button" 
+            onclick="finishButton_Click" />
     </div>
     </form>
 </body>

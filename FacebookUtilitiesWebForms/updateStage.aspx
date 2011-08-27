@@ -9,7 +9,7 @@
 </head>
 <body>
     <form id="form1" runat="server">
-    <div class="top_area"Update the personal message for each friend"</div>
+    <div class="top_area">Update the personal message for each friend</div>
     <div id="search_area"></div>
     <div>
         <p>Update stage</p>

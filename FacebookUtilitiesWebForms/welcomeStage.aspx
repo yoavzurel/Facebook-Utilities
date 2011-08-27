@@ -9,8 +9,11 @@
 </head>
 <body>
     <form id="form1" runat="server">
+    <div class="top_area">Welcome to the utility</div>
+    <div id="search_area"></div>
     <div>
-    <p>Welcome Stage</p>
+        <asp:Table ID="friendsTable" runat="server">
+        </asp:Table>
     </div>
     </form>
 </body>
