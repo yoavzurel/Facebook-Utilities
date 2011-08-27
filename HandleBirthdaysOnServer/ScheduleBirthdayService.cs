@@ -39,6 +39,7 @@ namespace HandleBirthdaysOnServer
             System.Console.WriteLine("starting birthday service");
             BirthdayService birthdayService = new BirthdayService();
             birthdayService.Run();
+
         }
     }
 }
