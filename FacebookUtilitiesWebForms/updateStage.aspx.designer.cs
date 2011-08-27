@@ -10,7 +10,7 @@
 namespace FacebookUtilitiesWebForms {
     
     
-    public partial class messageWriteStage {
+    public partial class updateStage {
         
         /// <summary>
         /// form1 control.
@@ -29,15 +29,6 @@ namespace FacebookUtilitiesWebForms {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Table friendsTable;
-        
-        /// <summary>
-        /// cancelButton control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Button cancelButton;
         
         /// <summary>
         /// finishButton control.
