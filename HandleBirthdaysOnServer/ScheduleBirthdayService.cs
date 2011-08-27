@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 
 namespace HandleBirthdaysOnServer
 {
@@ -11,24 +12,32 @@ namespace HandleBirthdaysOnServer
     /// </summary>
     class ScheduleBirthdayService
     {
-        bool m_TimeToWork = true;
         internal void Run()
         {
-            //TODO: implement schedule
-            if (m_TimeToWork)
-            {
-                activateBirthdayService();
-            }
+            Timer timer = new Timer(activateBirthdayService, null, timeToStartTheTimerFrom(), timeBetweenTimerCalls());
 
+            //run infinantly
+            Thread.Sleep(Timeout.Infinite);
+        }
+
+        private TimeSpan timeBetweenTimerCalls()
+        {
+            return new TimeSpan(24, 0, 0);
+        }
+
+        private TimeSpan timeToStartTheTimerFrom()
+        {
+            return new TimeSpan(0, 0, 0);
         }
 
 
         /// <summary>
         /// if the daily time has arrived activate the birthday service
         /// </summary>
-        private void activateBirthdayService()
+        private static void activateBirthdayService(Object stateInfo)
         {
-            (new BirthdayService()).Run();
+            BirthdayService birthdayService = new BirthdayService();
+            birthdayService.Run();
         }
     }
 }

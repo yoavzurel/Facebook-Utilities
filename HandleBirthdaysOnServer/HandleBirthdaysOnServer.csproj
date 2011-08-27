@@ -11,7 +11,8 @@
     <RootNamespace>HandleBirthdaysOnServer</RootNamespace>
     <AssemblyName>HandleBirthdaysOnServer</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
-    <TargetFrameworkProfile>Client</TargetFrameworkProfile>
+    <TargetFrameworkProfile>
+    </TargetFrameworkProfile>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
@@ -33,12 +34,10 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\FacebookUtilitiesWebForms\FacebookUtilitiesWebForms.csproj">
-      <Project>{76BDB027-F9EA-4FF0-AFE8-5352F04A8EB6}</Project>
-      <Name>FacebookUtilitiesWebForms</Name>
-    </ProjectReference>
-  </ItemGroup>
+  <PropertyGroup>
+    <StartupObject>
+    </StartupObject>
+  </PropertyGroup>
   <ItemGroup>
     <Compile Include="BirthdayMessageSender.cs" />
     <Compile Include="BirthdayService.cs" />
@@ -48,6 +47,15 @@
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="app.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\FacebookUtilitiesWebForms\FacebookUtilitiesWebForms.csproj">
+      <Project>{76BDB027-F9EA-4FF0-AFE8-5352F04A8EB6}</Project>
+      <Name>FacebookUtilitiesWebForms</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
