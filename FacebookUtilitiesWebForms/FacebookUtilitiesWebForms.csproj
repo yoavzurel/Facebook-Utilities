@@ -55,9 +55,11 @@
   <ItemGroup>
     <Content Include="CSS\jquery.facebook.multifriend.select.css" />
     <Content Include="default.aspx" />
+    <Content Include="deleteStage.aspx" />
     <Content Include="images\roundtext.gif" />
     <Content Include="messageWriteStage.aspx" />
     <Content Include="selectionStage.aspx" />
+    <Content Include="updateStage.aspx" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
@@ -65,6 +67,7 @@
     <Content Include="Web.Release.config">
       <DependentUpon>Web.config</DependentUpon>
     </Content>
+    <Content Include="welcomeStage.aspx" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DataBaseHandler.cs" />
@@ -74,6 +77,13 @@
     </Compile>
     <Compile Include="default.aspx.designer.cs">
       <DependentUpon>default.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="deleteStage.aspx.cs">
+      <DependentUpon>deleteStage.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="deleteStage.aspx.designer.cs">
+      <DependentUpon>deleteStage.aspx</DependentUpon>
     </Compile>
     <Compile Include="FacebookLoginAuthintication.cs" />
     <Compile Include="FacebookUser.cs" />
@@ -96,6 +106,20 @@
     </Compile>
     <Compile Include="ApplicationUser.cs" />
     <Compile Include="TableMessageRow.cs" />
+    <Compile Include="updateStage.aspx.cs">
+      <DependentUpon>updateStage.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="updateStage.aspx.designer.cs">
+      <DependentUpon>updateStage.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="welcomeStage.aspx.cs">
+      <DependentUpon>welcomeStage.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="welcomeStage.aspx.designer.cs">
+      <DependentUpon>welcomeStage.aspx</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />
