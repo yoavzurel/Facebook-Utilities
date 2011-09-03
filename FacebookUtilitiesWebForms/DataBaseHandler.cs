@@ -71,7 +71,7 @@ namespace FacebookUtilitiesWebForms
     public class DataBaseHandler
     {
 
-        private const string m_ConnectionString = "Data Source=YOAVZUREL-PC;Initial Catalog=FacebookBirthdayUtility;Integrated Security=True";
+        private const string m_ConnectionString = "Data Source=david-PC;Initial Catalog=FacebookBirthdayUtility;Integrated Security=True";
         private SqlConnection m_DbConnection = new SqlConnection(m_ConnectionString);
         SqlCommand m_DbCommand;
 
